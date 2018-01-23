@@ -9,7 +9,8 @@ import {
 } from 'native-base';
 
 import {
-	Image
+	Image,
+	Dimensions
 } from 'react-native'
 
 
@@ -21,10 +22,17 @@ export default class MainHeader extends React.Component{
 
 
 	render(){
+		const { width, height} = Dimensions.get('screen')
 		return(
 			<View style={styles.header}>
-				<Thumbnail ref={{uri: 'http://google.com'}} />
-				<Thumbnail style={styles.imgLogo} square ref={{uri: 'http://google.com'}} />
+				<Image 
+					source={require('../assets/img/portada.jpeg')} 
+					style={{
+						maxHeight: 120,
+						maxWidth:  width
+					}}
+				/>
+				<Thumbnail style={styles.imgLogo} square source={require('../assets/img/cafe.jpeg')} />
 				<View style={styles.logo}>
 
 					<H3 style={styles.logoText}>Mi negocio</H3>
@@ -41,12 +49,12 @@ export default class MainHeader extends React.Component{
 const styles = {
 	header: {
 		position: "relative",
-		marginTop: 32
+		marginTop: 0
 	},
 	logo: {
 		position: "relative",
 		marginLeft: 138,
-		marginTop: 32
+		marginTop: 2
 	},
 	logoText: {
 		marginBottom: 0,
@@ -61,12 +69,10 @@ const styles = {
 		color: "#ffffff"		
 	},
 	imgLogo:{
-	    display: 'block',
-		borderStyle: "solid",
-	    width: "100%",
-	    maxWidth: 150,
-	    borderWeight: 1,
-	    borderColor: "#00D9C7",
-	    margin: 0
+		position: "absolute",
+		top: 95,
+		left: 20,
+		width: 100,
+		height: 100
 	}
 }
