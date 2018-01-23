@@ -5,12 +5,14 @@ import {
 	Thumbnail,
 	Container,
 	Content,
-	H3
+	H3,
+	Button
 } from 'native-base';
 
 import {
 	Image,
-	Dimensions
+	Dimensions,
+	TouchableOpacity,
 } from 'react-native'
 
 
@@ -23,16 +25,31 @@ export default class MainHeader extends React.Component{
 
 	render(){
 		const { width, height} = Dimensions.get('screen')
+		const { navigation } = this.props
 		return(
 			<View style={styles.header}>
 				<Image 
 					source={require('../assets/img/portada.jpeg')} 
 					style={{
-						maxHeight: 120,
+						maxHeight: 150,
 						maxWidth:  width
 					}}
 				/>
-				<Thumbnail style={styles.imgLogo} square source={require('../assets/img/cafe.jpeg')} />
+				<TouchableOpacity 
+					style={styles.imgLogo}  
+					onPress={ ()=>{ navigation.navigate('PerfilScreen') } }
+				>
+					<Thumbnail 	
+						style={{
+							minWidth: 100,
+							minHeight: 100,
+							maxWidth: 150,
+							maxHeight: 150
+						}}
+						square 
+						source={require('../assets/img/cafe.jpeg')} 
+					/>
+				</TouchableOpacity>
 				<View style={styles.logo}>
 
 					<H3 style={styles.logoText}>Mi negocio</H3>
@@ -72,7 +89,7 @@ const styles = {
 		position: "absolute",
 		top: 95,
 		left: 20,
-		width: 100,
-		height: 100
+		width: 200,
+		height: 200
 	}
 }

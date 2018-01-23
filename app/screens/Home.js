@@ -30,9 +30,9 @@ export default class Home extends Component {
 				
 			<View style={styles.container}>
 				<StatusBar translucent={true} backgroundColor={'transparent'}/>
-				<MainHeader />
+				<MainHeader {...this.props} />
 				<Content>
-					<Botonera />
+					<Botonera  {...this.props} />
 				</Content>
 					<View style={{ alignSelf: "center",alignContent: "center", alignItems: "center", flex: 0.1, left: 0, right: 0 ,position: "relative", bottom: 0, flexDirection: 'row', alignItems: "center" ,marginBottom : 0}}>
 						<View style={{flex: 0.8, alignSelf: "center",alignContent: "center", alignItems: "center"}}>
