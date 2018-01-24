@@ -3,6 +3,7 @@ import Home from '../screens/Home';
 import Perfil from '../screens/Perfil';
 import CrearProducto from '../screens/CrearProducto';
 import PublicacionEstandar from '../screens/publicaciones/PublicacionEstandar';
+import Productos from '../screens/Productos';
 
 const Navigation = StackNavigator({
 	RootScreen: {
@@ -19,6 +20,9 @@ const Navigation = StackNavigator({
 	},
 	Estandar: {
 		screen: PublicacionEstandar
+	},
+	Productos:{
+		screen: Productos
 	}
 });
 
