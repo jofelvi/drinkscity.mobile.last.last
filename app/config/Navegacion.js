@@ -4,6 +4,9 @@ import Perfil from '../screens/Perfil';
 import CrearProducto from '../screens/CrearProducto';
 import PublicacionEstandar from '../screens/publicaciones/PublicacionEstandar';
 import Productos from '../screens/Productos';
+import Funcionarios from '../screens/Funcionarios';
+import AboutFuncionario from '../screens/AboutFuncionario';
+import { Platform, StatusBar } from 'react-native';
 
 const Navigation = StackNavigator({
 	RootScreen: {
@@ -23,7 +26,17 @@ const Navigation = StackNavigator({
 	},
 	Productos:{
 		screen: Productos
+	},
+	BtnFuncionarios:{
+		screen: Funcionarios
+	},
+	FormFuncionario: {
+		screen: AboutFuncionario
 	}
+},{
+   cardStyle: {
+     paddingTop: Platform.OS === 'ios' ? 0 : StatusBar.currentHeight
+   }
 });
 
 export {

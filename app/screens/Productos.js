@@ -24,7 +24,7 @@ import {
 	Dimensions,
 	StatusBar,
 	Image,
-	TouchableOpacity
+	TouchableOpacity,
 } from 'react-native';
 
 import Product from '../classes/Product'
@@ -147,6 +147,7 @@ export default class Productos extends React.Component{
 		
 		return(
 			<View style={styles.container}>
+				<StatusBar translucent backgroundColor={'#02A6A4'} />
 				<Content>
 					{this._renderCards()}
 				</Content>

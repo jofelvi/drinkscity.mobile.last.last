@@ -1,5 +1,5 @@
 import React from 'react';
-import PerfilEmpresa from '../classes/Perfil';
+import {Perfil as PerfilEmpresa} from '../classes/Perfil';
 
 import {
 	View,
@@ -10,7 +10,13 @@ import {
 	Form,
 	Item,
 	Input,
-	Label
+	Label,
+	List,
+	ListItem,
+	Icon,
+	Right,
+	Left,
+	Body
 } from 'native-base';
 
 import {
@@ -20,14 +26,10 @@ import {
 	Alert
 } from 'react-native';
 
+import FontAwesome, {Icons} from 'react-native-fontawesome';
 
-export default class Perfil extends React.Component{
 
-	static navigationOptions = {
-		title: 'Perfil',
-		headerTintColor: "#ffffff",
-		headerStyle: { backgroundColor: "#02A6A4" }
-	}
+export default class FuncionarioForm extends React.Component{
 
 	constructor(props){
 		super(props);
@@ -35,20 +37,15 @@ export default class Perfil extends React.Component{
 
 	render(){
 		const { width, height } = Dimensions.get('screen')
-		negocio = new PerfilEmpresa({
-			picture: require('../assets/img/cafe.jpeg'),
-			resena: 'Sofisticado ambiente, los mejores hits.',
-			telefono: '04262225797'
-		});
 
 
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent backgroundColor={'#02A6A4'} />
 				<Container>
-					<Content>
-						<Text style={{color: "#ffffff"}}>{negocio.getResena()}</Text>
-					</Content>
+
+					<Form>
+					</Form>
 				</Container>
 			</View>
 		);

@@ -49,7 +49,7 @@ export default class PublicacionEstandar extends React.Component{
 
 		return(
 			<View style={styles.container}>
-				<StatusBar translucent backgroundColor={'transparent'} />
+				<StatusBar translucent backgroundColor={'#02A6A4'} />
 				<Container>
 					<Content>
 						{this._renderForm()}

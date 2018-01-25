@@ -29,7 +29,7 @@ export default class Home extends Component {
 		return(
 				
 			<View style={styles.container}>
-				<StatusBar translucent={true} backgroundColor={'transparent'}/>
+				<StatusBar translucent={true} backgroundColor={'#000000'}/>
 				<MainHeader {...this.props} />
 				<Content>
 					<Botonera  {...this.props} />

@@ -26,14 +26,16 @@ import {
 	Alert
 } from 'react-native';
 
+import FontAwesome, {Icons} from 'react-native-fontawesome';
 
-export default class CrearProducto extends React.Component{
+export default class Funcionarios extends React.Component{
 
-	static navigationOptions = {
-		title: 'Crear Producto',
+	static navigationOptions = ({navigation}) => ({
+		title: `${navigation.state.params.titulo}`,
 		headerTintColor: "#ffffff",
-		headerStyle: { backgroundColor: "#02A6A4" }
-	}
+		headerStyle: { backgroundColor: "#02A6A4" },
+		headerRight: <Button onPress={()=>{navigation.navigate('FormFuncionario', {titulo: 'Crear Funcionario', side: 'screen', funcionario: false})}} transparent><Text><FontAwesome style={{color:"#ffffff", fontSize: 22}}>{Icons.plus}</FontAwesome></Text></Button> 
+	});
 
 	constructor(props){
 		super(props);
@@ -52,28 +54,13 @@ export default class CrearProducto extends React.Component{
 							<ListItem>
 								<Body>
 									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Estandar', {tipo: "ESTANDAR", titulo: "PUBLICACION ESTANDAR", dato: false})}}>
-										<Text style={{color: "#ffffff"}}>PUBLICACION ESTANDAR</Text>
+										<Text style={{color: "#ffffff"}}>RRPP</Text>
 									</TouchableOpacity>
 								</Body>
 							</ListItem>
 							<TouchableOpacity>
 								<ListItem>
-									<Text style={{color: "#ffffff"}}>OFERTA DEL MOMENTO</Text>
-								</ListItem>
-							</TouchableOpacity>
-							<TouchableOpacity>
-								<ListItem>
-									<Text style={{color: "#ffffff"}}>PROMOCION</Text>
-								</ListItem>
-							</TouchableOpacity>
-							<TouchableOpacity>
-								<ListItem>
-									<Text style={{color: "#ffffff"}}>PUBLICIDAD DESTACADA</Text>
-								</ListItem>
-							</TouchableOpacity>
-							<TouchableOpacity>
-								<ListItem>
-									<Text style={{color: "#ffffff"}}>PUBLICACION VIP (Slide Principal)</Text>
+									<Text style={{color: "#ffffff"}}>Validadores</Text>
 								</ListItem>
 							</TouchableOpacity>
 						</List>
