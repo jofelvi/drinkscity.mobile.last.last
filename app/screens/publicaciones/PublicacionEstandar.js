@@ -41,7 +41,7 @@ export default class PublicacionEstandar extends React.Component{
 		 const { state } = this.props.navigation
 
 		 if( state.params.tipo == 'ESTANDAR' )
-		 	return <PubEstandar color={'#ffffff'} />
+		 	return <PubEstandar color={'#ffffff'} producto={state.params.producto} />
 	}
 
 	render(){

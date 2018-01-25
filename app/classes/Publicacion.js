@@ -12,24 +12,24 @@ export default class Publicacion{
 	}
 
 	getTituloAviso(){
-		return this.datos.titulo_aviso;
+		return this.datos.name;
 	}
 
 	setTituloAviso( newTitle ){
-		this.datos.titulo_aviso = newTitle;
+		this.datos.name = newTitle;
 	}
 
 	setCategoriaId(id){
-		this.datos.categoria = id;
+		this.datos.category = id;
 		return id;
 	}
 
 	getCategoriaId(){
-		return this.datos.categoria;
+		return this.datos.category;
 	}
 
 	setDescripcion(text){
-		this.datos.descripcion = text;
+		this.datos.description = text;
 	}
 
 	setStock(stock){
@@ -39,7 +39,7 @@ export default class Publicacion{
 
 
 	setPrecio(precio){
-		this.datos.precio = precio;
+		this.datos.price = precio;
 	}
 
 	setFechaInicio(fecha){

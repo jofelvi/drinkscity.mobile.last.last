@@ -5,6 +5,7 @@ import {
 
 import { store } from '../redux/store';
 import { searchProducts } from '../redux/actions';
+const moment = require('moment');
 
 export default class Model{
 
@@ -51,6 +52,39 @@ export default class Model{
 
 	allToRedux(){
 		this._getRequest();
+	}
+
+	getAttribute(attr){
+		return this.data[attr];
+	}
+
+	setAttribute(attr, newValue){
+		this.data[attr] = newValue;
+		return this.getAttribute(attr);
+	}
+
+	_validStringAttribute(attribute){
+		return true;
+	}
+
+	_validIntegerAttribute(attribute){
+
+		return !isNaN( parseFloat( this.data[attribute] ) ) && isFinite(this.data[attribute]);
+	}
+
+	_validFloatAttribute(attribute){
+		return this._validIntegerAttribute(attribute);
+	}
+
+	_validDateAttribute(attribute){
+		format1 = moment( this.data[attribute] , 'DD-MM-YYYY');
+		format2 = moment( this.data[attribute] , 'YYYY-MM-DD');
+
+		return (format1.isValid() || format2.isValid());
+	}
+
+	valid(type, attribute){
+		return eval(`this._valid${type}Attribute('${attribute}')`);
 	}
 
 }

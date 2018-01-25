@@ -74,7 +74,7 @@ export default class Productos extends React.Component{
 							</Text>
 						</Body>
 						<Right>
-							<Button transparent>
+							<Button transparent onPress={()=>{ this.props.navigation.navigate('Estandar', {producto: dato, tipo: "ESTANDAR", titulo: dato.name }) } }>
 								<Text>
 									<FontAwesome style={{color: "#02A6A4", fontSize: 20}}>{Icons.pencil}</FontAwesome>
 								</Text>

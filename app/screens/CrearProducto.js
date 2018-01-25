@@ -51,7 +51,7 @@ export default class CrearProducto extends React.Component{
 						<List>
 							<ListItem>
 								<Body>
-									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Estandar', {tipo: "ESTANDAR", titulo: "PUBLICACION ESTANDAR"})}}>
+									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Estandar', {tipo: "ESTANDAR", titulo: "PUBLICACION ESTANDAR", dato: false})}}>
 										<Text style={{color: "#ffffff"}}>PUBLICACION ESTANDAR</Text>
 									</TouchableOpacity>
 								</Body>

@@ -29,24 +29,18 @@ import {
 } from 'react-native';
 import Publicacion from '../../classes/Publicacion';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
+import Product from '../../classes/Product'
 
 export default class PubEstandar extends React.Component{
 	constructor(props){
 		super(props);
+
+		var producto = (this.props.producto) 
+						? this.props.producto 
+						: { stock: 0, name: '', category: 0, description: '', price: 0.00, fecha_inicio: '1900-01-01', fecha_fin: '1900-01-01' };
 		this.state = {
-			titulo_aviso: '',
-			categoria: 0,
-			detalles: '',
-			stock: 0, 
-			fecha_inicio: '',
-			fecha_fin: '',
-			pub: new Publicacion({
-				titulo_aviso: null,
-				categoria: 0,
-				detalles: null,
-				stock: null,
-				precio: 0.0
-			})
+			pub: new Product(producto),
+			...this.props.producto
 		};
 
 	}
@@ -88,27 +82,28 @@ export default class PubEstandar extends React.Component{
 							</Label>
 							<Input 
 								style={{ color: this.props.color }} 
-								onChangeText={ text =>{this.state.pub.setTituloAviso(text); }}  
+								onChangeText={ text =>{this.state.pub.setAttribute('name',text); this.setState({name: text}) }} 
+								value={this.state.name} 
 							/>
 						</Item>
 						<Picker
 							mode='dropdown'
-							onValueChange={value => {this.state.pub.setCategoriaId(value); this.setState({categoria: value}); }}
+							onValueChange={value => { this.state.pub.setAttribute('category', value); this.setState({category: value}); }}
 							style={{ color: this.props.color }}
-							selectedValue={this.state.categoria}
+							selectedValue={this.state.category}
 						>
 							<Item style={{color: this.props.color }} label="Tragos" value={0} />
 							<Item style={{color: this.props.color }} label='Licores' value={1} /> 
 						</Picker>
 						<Item floatingLabel>
 							<Label style={{ color: this.props.color }}>Detalles</Label>
-							<Input onChangeText={text=>{this.state.pub.setDescripcion(text); }} multiline={true} numberOfLines={4} />
+							<Input  style={{ color: this.props.color }} value={this.state.description} onChangeText={text=>{ this.setState({description: this.state.pub.setAttribute('description', text)}); }} multiline={true} numberOfLines={4} />
 						</Item>
 						<Item floatingLabel>
 							<Label style={{ color: this.props.color }}>Stock</Label>
 							<Input 
 								style={{ color: this.props.color }} 
-								onChangeText={ stock =>{ this.setState({ stock: this.state.pub.setStock(parseInt(stock)) }); }}  
+								onChangeText={ stock =>{ this.setState({ stock: this.state.pub.setAttribute('stock', stock) }) }}  
 								value={this.state.stock}
 							/>
 						</Item>
@@ -116,15 +111,15 @@ export default class PubEstandar extends React.Component{
 							<Label style={{ color: this.props.color }}>Precio $</Label>
 							<Input 
 								style={{ color: this.props.color }} 
-								onChangeText={ stock =>{ this.setState({ precio: this.state.pub.setPrecio(parseFloat(stock)) }); }}  
-								value={this.state.precio}
+								onChangeText={ price =>{ this.setState({ price: this.state.pub.setAttribute('price', price) }) }}  
+								value={this.state.price}
 							/>
 						</Item>
 						<Item floatingLabel>
 							<Label style={{ color: this.props.color }}>Fecha de inicio del anuncio</Label>
 							<Input 
 								style={{ color: this.props.color }} 
-								onChangeText={ stock =>{ this.setState({ fecha_inicio: this.state.pub.setFechaInicio(stock) }); }}  
+								onChangeText={ fecha_inicio =>{ this.setState({ fecha_inicio: this.state.pub.setAttribute('fecha_inicio', fecha_inicio) }) }}  
 								value={this.state.fecha_inicio}
 							/>
 						</Item>
@@ -132,13 +127,13 @@ export default class PubEstandar extends React.Component{
 							<Label style={{ color: this.props.color }}>Fecha de finalizacion del anuncio</Label>
 							<Input 
 								style={{ color: this.props.color }} 
-								onChangeText={ stock =>{ this.setState({ fecha_fin: this.state.pub.setFechaFin(stock) }); }}  
+								onChangeText={ fecha_fin =>{ this.setState({ fecha_fin: this.state.pub.setAttribute('fecha_fin', fecha_fin) }); }}  
 								value={this.state.fecha_fin}
 							/>
 						</Item>
 					</Form>
 
-					<Button  block style={{ backgroundColor: "#02A6A4", marginBottom: 52 }}>
+					<Button onPress={()=>{ this.state.pub.push() }}  block style={{ backgroundColor: "#02A6A4", marginBottom: 52 }}>
 						<Text style={{color: this.props.color}}>PUBLICAR</Text>
 					</Button>
 				
