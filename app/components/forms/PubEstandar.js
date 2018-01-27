@@ -37,7 +37,9 @@ export default class PubEstandar extends React.Component{
 
 		var producto = (this.props.producto) 
 						? this.props.producto 
-						: { stock: 0, name: '', category: 0, description: '', price: 0.00, fecha_inicio: '1900-01-01', fecha_fin: '1900-01-01' };
+						: {user_id: 1, store_id: 1, priority: this.props.priority, stock: 0, name: '', category: 0, description: '', price: 0.00, fecha_inicio: '1900-01-01', fecha_fin: '1900-01-01' };
+		
+		Alert.alert('DEBUG', JSON.stringify(producto));
 		this.state = {
 			pub: new Product(producto),
 			...this.props.producto

@@ -18,6 +18,22 @@ export default class QRScaner extends Component {
 		headerStyle: { backgroundColor: "#02A6A4" },
 		title: 'Validacion de orden mediante QR'
 	});
+
+  constructor(props){
+    super(props);
+    this.state = {
+      onBarCodeRead: this._onBarCodeRead
+    }
+  }
+
+  componentWillMount(){
+    this.setState({
+      camera : {
+        onBarCodeRead: this.onBarCodeRead
+      }
+    })
+  }
+
   render() {
     return (
       <View style={styles.container}>
@@ -27,7 +43,7 @@ export default class QRScaner extends Component {
             this.camera = cam;
           }}
           	barCodeTypes={[Camera.constants.BarCodeType.qr]}
-	  		onBarCodeRead={this.onBarCodeRead.bind(this)}
+	  		onBarCodeRead={this.state.onBarCodeRead}
          	style={styles.preview}
           	aspect={Camera.constants.Aspect.fill}>
         </Camera>
@@ -35,11 +51,19 @@ export default class QRScaner extends Component {
     );
   }
 
-  onBarCodeRead(e) {
-    Alert.alert('DEBUG', JSON.stringify(e));
+  _onBarCodeRead=(e)=>{
     this.camera.stopCapture();
-    Linking.openURL(e.data).catch(err => Alert.alert('An error occurred', err));
-    this.props.navigation.goBack();
+    this.setState({
+      onBarCodeRead: null
+    });
+     this.props.navigation.navigate('onScanner', {scanData: e});
+
+     setTimeout(()=>{
+      this.setState({
+        onBarCodeRead: this._onBarCodeRead
+      });
+     },4000)
+
   }
 
   takePicture() {

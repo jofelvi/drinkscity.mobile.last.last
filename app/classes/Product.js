@@ -35,7 +35,8 @@ export default class Product extends Model{
 			'stock',
 			'fecha_inicio',
 			'fecha_fin',
-			'category'
+			'category',
+			'priority'
 		];
 
 		/**
@@ -53,6 +54,7 @@ export default class Product extends Model{
 			stock : {type: 'integer', required: true, alias: 'Stock'},
 			fecha_inicio : {type: 'date', required: true, alias:'Fecha de inicio del anuncio'},
 			fecha_fin : {type: 'date', required: true, alias: 'Fecha de fin del anuncio'},
+			priority: {type:'integer', required: true, alias: 'Prioridad de la publicacion'}
 		}
 	}
 
@@ -65,14 +67,13 @@ export default class Product extends Model{
 		// SE CALCULA LA LONGITUD DEL ARREGLO DE CAMPOS DE LA TABLA Y SE 
 		// RECORRE EN UN FOR PARA VALIDARLOS
 		let data = this.fillable.length;
-
 		for (var i = 0; i < data; i++) {
 
 			//	USANDO LA POSICION DEL STRING DE CADA UNO DE LOS CAMPOS DE LA TABLA
 			//	ALMACENADOS EN EL ARRAY FILLABLE Y SE USA PARA VALIDAR EL CAMPO
 			//	EN EL OBJETO DATA
-			if(this.data[ this.fillable[i] ] == '' && this.data_type[ this.fillable[i] ].required ){
-				Alert.alert('Error', 'Debe completar todos los campos presentes en el formulario');
+			if((this.data[ this.fillable[i] ] == '' && this.fillable[i] != 'priority') && this.data_type[ this.fillable[i] ].required ){
+				Alert.alert('Error', '[ '+this.fillable[i]+'] Debe completar todos los campos presentes en el formulario ->'+JSON.stringify(this.data));
 				return false;
 			}else{
 				let type = this.data_type[ this.fillable[i] ].type
@@ -82,5 +83,10 @@ export default class Product extends Model{
 				}
 			}
 		}
+
+		let resp = super.push('product', 'POST');
+		resp.then( rep => {
+			Alert.alert('DEBUG-2',JSON.stringify(rep));
+		});
 	}
 }

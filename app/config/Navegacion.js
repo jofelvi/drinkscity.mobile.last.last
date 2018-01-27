@@ -7,6 +7,7 @@ import Productos from '../screens/Productos';
 import Funcionarios from '../screens/Funcionarios';
 import AboutFuncionario from '../screens/AboutFuncionario';
 import QRScaner from '../screens/QRScaner';
+import onQRScann from '../screens/onQRScann';
 import { Platform, StatusBar } from 'react-native';
 
 const Navigation = StackNavigator({
@@ -36,6 +37,9 @@ const Navigation = StackNavigator({
 	},
 	QRScanner:{
 		screen: QRScaner
+	},
+	onScanner:{
+		screen:onQRScann
 	}
 },{
    cardStyle: {

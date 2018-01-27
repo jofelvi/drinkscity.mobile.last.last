@@ -161,4 +161,19 @@ export default class Model{
 			}
 		});
 	}
+
+	static async getWithId(model , id){
+		con = new Connection();
+
+		let resp = fetch(con.getUrlApi(model)+'/'+id, {
+			method: 'GET',
+			headers:{
+				Accept: 'application/json'
+			}
+		}).then( (resp)=>{
+			return resp._bodyInit;
+		});
+
+		return resp;
+	}
 }

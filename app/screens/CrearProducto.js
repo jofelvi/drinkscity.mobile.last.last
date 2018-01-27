@@ -51,31 +51,39 @@ export default class CrearProducto extends React.Component{
 						<List>
 							<ListItem>
 								<Body>
-									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Estandar', {tipo: "ESTANDAR", titulo: "PUBLICACION ESTANDAR", dato: false})}}>
+									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Estandar', {tipo: "ESTANDAR", titulo: "PUBLICACION ESTANDAR", dato: false, priority: 0})}}>
 										<Text style={{color: "#ffffff"}}>PUBLICACION ESTANDAR</Text>
 									</TouchableOpacity>
 								</Body>
 							</ListItem>
-							<TouchableOpacity>
-								<ListItem>
-									<Text style={{color: "#ffffff"}}>OFERTA DEL MOMENTO</Text>
-								</ListItem>
-							</TouchableOpacity>
-							<TouchableOpacity>
-								<ListItem>
-									<Text style={{color: "#ffffff"}}>PROMOCION</Text>
-								</ListItem>
-							</TouchableOpacity>
-							<TouchableOpacity>
-								<ListItem>
-									<Text style={{color: "#ffffff"}}>PUBLICIDAD DESTACADA</Text>
-								</ListItem>
-							</TouchableOpacity>
-							<TouchableOpacity>
-								<ListItem>
-									<Text style={{color: "#ffffff"}}>PUBLICACION VIP (Slide Principal)</Text>
-								</ListItem>
-							</TouchableOpacity>
+							<ListItem>
+								<Body>
+									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Estandar', {tipo: "ESTANDAR", titulo: "PUBLICACION ESTANDAR", dato: false, priority: 1})}}>
+										<Text style={{color: "#ffffff"}}>OFERTA DEL MOMENTO</Text>
+									</TouchableOpacity>
+								</Body>
+							</ListItem>
+							<ListItem>
+								<Body>
+									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Estandar', {tipo: "ESTANDAR", titulo: "PUBLICACION ESTANDAR", dato: false, priority: 2})}}>
+										<Text style={{color: "#ffffff"}}>PROMOCION</Text>
+									</TouchableOpacity>
+								</Body>
+							</ListItem>
+							<ListItem>
+								<Body>
+									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Estandar', {tipo: "ESTANDAR", titulo: "PUBLICACION ESTANDAR", dato: false, priority: 3})}}>
+										<Text style={{color: "#ffffff"}}>PUBLICACION DESTACADA</Text>
+									</TouchableOpacity>
+								</Body>
+							</ListItem>
+							<ListItem>
+								<Body>
+									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Estandar', {tipo: "ESTANDAR", titulo: "PUBLICACION ESTANDAR", dato: false, priority: 4})}}>
+										<Text style={{color: "#ffffff"}}>PUBLICACION VIP (Slide Principal)</Text>
+									</TouchableOpacity>
+								</Body>
+							</ListItem>
 						</List>
 					</Content>
 				</Container>
