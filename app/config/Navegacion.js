@@ -6,6 +6,7 @@ import PublicacionEstandar from '../screens/publicaciones/PublicacionEstandar';
 import Productos from '../screens/Productos';
 import Funcionarios from '../screens/Funcionarios';
 import AboutFuncionario from '../screens/AboutFuncionario';
+import QRScaner from '../screens/QRScaner';
 import { Platform, StatusBar } from 'react-native';
 
 const Navigation = StackNavigator({
@@ -32,6 +33,9 @@ const Navigation = StackNavigator({
 	},
 	FormFuncionario: {
 		screen: AboutFuncionario
+	},
+	QRScanner:{
+		screen: QRScaner
 	}
 },{
    cardStyle: {

@@ -23,11 +23,14 @@ export default class Botonera extends React.Component{
 
 	render(){
 		return(
-			<View style={{marginTop: "4%", marginLeft: "3%"}}>
+			<View 
+				style={{marginTop: "4%", marginLeft: "3%"}}
+				
+			>
 					<Grid>
 						<Row>
 							<Col>
-								<TouchableOpacity style={{alignSelf: "center", alignItems: "center", alignContent: "center", marginBottom: "7%"}}>
+								<TouchableOpacity onPress={()=>{ this.props.navigation.navigate('QRScanner') }} style={{alignSelf: "center", alignItems: "center", alignContent: "center", marginBottom: "7%"}}>
 									<BackgroundButton 
 										imagen={require('../assets/img/banda.png')} 
 										text={'ESCANEAR'} 
