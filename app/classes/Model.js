@@ -4,7 +4,9 @@ import {
 } from 'react-native';
 
 import { store } from '../redux/store';
-import { searchProducts } from '../redux/actions';
+import { searchProducts, modelActions } from '../redux/actions';
+import { funcionarios } from '../redux/actions';
+
 const moment = require('moment');
 
 export default class Model{
@@ -87,4 +89,76 @@ export default class Model{
 		return eval(`this._valid${type}Attribute('${attribute}')`);
 	}
 
+	async push(param, method = 'GET' ,exito ='Los datos han sido guardados correctamente', error = 'Ha ocurrido un error al intentar guardar los datos'){
+		let connection = new Connection;
+
+		let json = JSON.stringify(this.data)
+		const body = '{"'+param+'":'+json+'}'
+		return await fetch( connection.getUrlApi(this._model), {
+			method,
+			headers:{
+				'Content-Type': 'application/json',
+				Accept: 'application/json'
+			},
+			body: body
+		}).then( resp => resp);
+	}
+
+	async getAll(){
+		const con = new Connection();
+		let url = con.getUrlApi(this._model);
+
+		let req = await fetch(url, {
+			method: 'GET',
+			headers: {
+				Accept: 'application/json'
+			}
+		}).then( resp =>{
+			return resp._bodyInit;
+		});
+
+		store.dispatch(modelActions(req, this._model));
+	}	
+
+	async delete(method = 'DELETE'){
+		const con = new Connection();
+		
+		var req = await fetch(con.getUrlApi(this._model)+'/'+this.data.id, {
+			method,
+			headers:{
+				Accept: 'application/json'
+			}
+		}).then( resp =>{ Alert.alert('Accion realizada', 'La accion se ha realizado de manera correcta'); } );
+
+	}
+
+	async update(method = 'PUT', navigation){
+		const con = new Connection();
+
+		let params = '{ "user" : '+JSON.stringify(this.data)+' }';
+
+		let req = await fetch(con.getUrlApi(this._model)+'/'+this.data.id, {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: params
+		}).then(resp => {
+			const { _bodyInit } = resp;
+			if(resp.status == '200' || resp.status == 200){
+				Alert.alert('Correcto', 'Los datos han sido actualizados correctamente', [
+					{
+						text: 'Aceptar',
+						onPress:()=>{ 
+							navigation.navigate('BtnFuncionarios', {titulo: 'Funcionarios', funcionario: false});
+							navigation.state.params.onUpdate(resp._bodyInit);
+						}
+					}
+				]);
+			}
+			else{
+				Alert.alert('Error', 'A ocurrido un error inesperado -> '+JSON.stringify(resp)+' -> '+params);
+			}
+		});
+	}
 }

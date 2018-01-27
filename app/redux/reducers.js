@@ -3,10 +3,11 @@ import {
 } from 'react-native';
 
 const initialState = {
-	products: []
+	products: [],
+	funcionarios: []
 }
 
-const productsReducer = function( state = initialState, action ){
+const reducer = function( state = initialState, action ){
 
 	let newState = state;
 	if( action.type == 'PRODUCTS' ){	
@@ -14,10 +15,14 @@ const productsReducer = function( state = initialState, action ){
 					return dato;
 				});
 	}
+
+	if( action.type == 'BUSCAR_FUNCIONARIOS' ){
+		return { users: action.funcionarios };
+	}
 	return newState;
 }
 
 
 export {
-	productsReducer
+	reducer
 }

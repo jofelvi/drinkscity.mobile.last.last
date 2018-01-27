@@ -10,6 +10,26 @@ const searchProducts = function(products = []){
 	};
 }
 
+const funcionarios = (funcionarios = []) =>{
+	return {
+		type: 'BUSCAR_FUNCIONARIOS',
+		funcionarios
+	}
+}
+
+const modelActions = (funcionarios = [], model = null) =>{
+
+	if( model == 'users' ){
+		return {
+			type: 'BUSCAR_FUNCIONARIOS',
+			funcionarios
+		};
+	}
+}
+
+
 export {
-	searchProducts
+	searchProducts,
+	funcionarios,
+	modelActions
 }

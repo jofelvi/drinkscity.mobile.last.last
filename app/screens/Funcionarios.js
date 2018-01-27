@@ -16,17 +16,22 @@ import {
 	Icon,
 	Right,
 	Left,
-	Body
+	Body,
+	Fab
 } from 'native-base';
 
 import {
 	StatusBar,
 	Dimensions,
 	TouchableOpacity,
-	Alert
+	Alert,
+	ScrollView,
+	Root
 } from 'react-native';
 
 import FontAwesome, {Icons} from 'react-native-fontawesome';
+import Funcionario from '../classes/Funcionario';
+import { store } from '../redux/store';
 
 export default class Funcionarios extends React.Component{
 
@@ -34,11 +39,94 @@ export default class Funcionarios extends React.Component{
 		title: `${navigation.state.params.titulo}`,
 		headerTintColor: "#ffffff",
 		headerStyle: { backgroundColor: "#02A6A4" },
-		headerRight: <Button onPress={()=>{navigation.navigate('FormFuncionario', {titulo: 'Crear Funcionario', side: 'screen', funcionario: false})}} transparent><Text><FontAwesome style={{color:"#ffffff", fontSize: 22}}>{Icons.plus}</FontAwesome></Text></Button> 
 	});
 
 	constructor(props){
 		super(props);
+		this.funcionario = new Funcionario();
+		this.fillables = this.funcionario.getFillables();
+
+		this.state = {
+			funcionarios: [],
+			validadores: [],
+			rrpp: [],
+			complete: false,
+		};
+
+		store.subscribe( ()=>{
+			let objects = JSON.parse(store.getState().users).filter( func => func);
+			this.setState({
+				funcionarios: objects
+			});
+		} )
+	}
+
+	onBack = complete => {
+		this.setState({ complete });
+		if(complete){
+			Alert.alert('Exito', 'El usuario ha sido creado satisfactoriamente');	
+		}
+	}
+
+	componentWillMount(){
+		let dat = this.funcionario.getAll();
+	}
+
+	onDelete(func){
+		 (new Funcionario(func)).delete();
+
+		 let objects = this.state.funcionarios.filter( data =>{
+		 	return data.id !=  func.id
+		 } )
+		 this.setState({
+		 	funcionarios: objects
+		 })
+	}
+
+	onUpdate = update =>{
+		let dat = this.funcionario.getAll();
+	}
+
+	_renderListItems(){	
+		const funcs = ( typeof(this.state.funcionarios) == 'string' ) ? JSON.parse(this.state.funcionarios) : this.state.funcionarios;
+		const list = funcs.map( data =>{
+			return(
+				<ListItem key={data.id}>
+					<Body>
+						<TouchableOpacity onPress={()=>{this.props.navigation.navigate('FormFuncionario', {titulo: data.fullname ? data.fullname : 'Editar usuario',accion: "editar", funcionario: data, onUpdate: this.onUpdate})}}>
+							<Text style={{color: "#ffffff"}}>
+								{ (data.fullname == null) ? 'No aplica' : data.fullname }
+							</Text>
+							{
+								this.funcionario.getRoles().map( (rol)=> { 
+									if(rol.name == data.role)
+										return <Text note style={{color: "#ffffff"}}>{rol.description}</Text> 
+								})
+							}						
+						</TouchableOpacity>
+					</Body>
+					<Right>
+						<Button danger onPress={()=>{
+							Alert.alert('Alerta','¿Esta seguro de realizar esta operacion?',[
+								{
+									text: 'Aceptar',
+									onPress: ()=>{ this.onDelete(data) }
+								},
+								{
+									text: 'Cancelar',
+								}
+							])
+						}}>
+							<Text>
+								<FontAwesome>{Icons.trashO}</FontAwesome>
+							</Text>
+						</Button>
+					</Right>
+				</ListItem>
+			);
+		} );
+
+		return list;
 	}
 
 	render(){
@@ -48,24 +136,27 @@ export default class Funcionarios extends React.Component{
 		return(
 			<View style={styles.container}>
 				<StatusBar translucent backgroundColor={'#02A6A4'} />
-				<Container>
-					<Content>
-						<List>
-							<ListItem>
-								<Body>
-									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('Estandar', {tipo: "ESTANDAR", titulo: "PUBLICACION ESTANDAR", dato: false})}}>
-										<Text style={{color: "#ffffff"}}>RRPP</Text>
-									</TouchableOpacity>
-								</Body>
-							</ListItem>
-							<TouchableOpacity>
-								<ListItem>
-									<Text style={{color: "#ffffff"}}>Validadores</Text>
-								</ListItem>
-							</TouchableOpacity>
-						</List>
-					</Content>
-				</Container>
+				<ScrollView>
+					<List
+						leftOpenValue={75}
+						rightOpenValue={-75}
+					>
+						{this._renderListItems()}
+					</List>
+				</ScrollView>
+				<View style={{flex: 1}} >
+					<Fab
+			            active={this.state.active}
+			            direction="up"
+			            containerStyle={{ }}
+			            style={{ backgroundColor: '#02A6A4' }}
+			            position="bottomRight"
+			            onPress={()=>{this.props.navigation.navigate('FormFuncionario', {titulo: 'Crear Funcionario', accion: 'crear' ,funcionario: false, onBack: this.onBack, onUpdate: this.onUpdate})}}>
+			            <Text>
+			            	<FontAwesome>{Icons.plus}</FontAwesome>
+			            </Text>
+			        </Fab>
+				</View>
 			</View>
 		);
 	}

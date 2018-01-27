@@ -21,21 +21,20 @@ String.prototype.capitalize = function(){
 export default class Funcionario extends Model{
 
 	constructor( data = false){
-		super('products', data);
+		super('users', data);
 
 		/**
 		 * MODELO DE LA TABLA DE PRODUCTOS ALOJADA EN EL SERVIDOR
 		 * @type {Array}
 		 */
 		this.fillable = [
-			'full_name', 
+			'fullname', 
 			'email',
 			'password',
 			'phone',
-			'type',
-			'fecha_inicio',
-			'fecha_fin',
-			'category'
+			'role',
+			'rut',
+			'address'
 		];
 
 		/**
@@ -46,12 +45,24 @@ export default class Funcionario extends Model{
 		 * @type {Object}
 		 */
 		this.data_type = {
-			full_name : { type: 'string', required: true, alias: "Nombre" }, 
+			fullname : { type: 'string', required: true, alias: "Nombre" }, 
 			email : {type: 'string', required: true, alias: 'Correo electronico'},
 			password: {type: 'string', required: true, alias: 'Clave'},
 			phone : {type: 'string', required: true, alias: 'Numero telefonico'},
 			type : {type: 'integer', required: true, alias: 'tipo'},
+			rut: {type: 'string', required: true, alias: 'Rut'},
+			role: {type: 'string', required: true, alias: 'Rol'},
+			address: {type: 'string', required: true, alias: 'Direccion'}
 		}
+
+		this.roles = [
+			{name: 'admin', description: 'Administrador'},
+			{name: 'store_admin', description: 'Store Admin'},
+			{name: 'validator', description: 'Validador'},
+			{name: 'rrpp', description: 'RRPP'},
+			{name: 'customer', description:'Customer'},
+			{name: 'guest', description:'Visitante'}
+		];
 	}
 
 	/**
@@ -80,5 +91,15 @@ export default class Funcionario extends Model{
 				}
 			}
 		}
+
+		super.push('user','POST', 'El usuario ha sido guardado de manera correcta');
+	}
+
+	getFillables(){
+		return this.fillable;
+	}
+
+	getRoles(){
+		return this.roles;
 	}
 }

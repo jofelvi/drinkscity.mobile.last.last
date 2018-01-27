@@ -1,8 +1,7 @@
 import { createStore } from 'redux'
-import { productsReducer } from './reducers';
+import { reducer } from './reducers';
 
-let store = createStore(productsReducer);
-
+let store = createStore(reducer);
 export {
 	store
 };
