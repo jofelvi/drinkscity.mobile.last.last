@@ -36,7 +36,9 @@ export default class Product extends Model{
 			'fecha_inicio',
 			'fecha_fin',
 			'category',
-			'priority'
+			'priority',
+			'user_id',
+			'store_id'
 		];
 
 		/**
@@ -54,7 +56,9 @@ export default class Product extends Model{
 			stock : {type: 'integer', required: true, alias: 'Stock'},
 			fecha_inicio : {type: 'date', required: true, alias:'Fecha de inicio del anuncio'},
 			fecha_fin : {type: 'date', required: true, alias: 'Fecha de fin del anuncio'},
-			priority: {type:'integer', required: true, alias: 'Prioridad de la publicacion'}
+			priority: {type:'integer', required: true, alias: 'Prioridad de la publicacion'},
+			user_id: {type:'integer', required: true, alias: 'Usuario'},
+			store_id:  {type:'integer', required: true, alias: 'Tienda'}
 		}
 	}
 
@@ -62,7 +66,7 @@ export default class Product extends Model{
 	 * METODO PARA VALIDAR Y ENVIAR LOS DATOS AL SERVIDOR
 	 * @return boolean RETORNA FALSO SI HA OCURRIDO ALGUN ERROR
 	 */
-	push(){
+	push(navigation = null){
 
 		// SE CALCULA LA LONGITUD DEL ARREGLO DE CAMPOS DE LA TABLA Y SE 
 		// RECORRE EN UN FOR PARA VALIDARLOS
@@ -83,10 +87,6 @@ export default class Product extends Model{
 				}
 			}
 		}
-
-		let resp = super.push('product', 'POST');
-		resp.then( rep => {
-			Alert.alert('DEBUG-2',JSON.stringify(rep));
-		});
+		let resp = super.push('product', 'POST', navigation);
 	}
 }

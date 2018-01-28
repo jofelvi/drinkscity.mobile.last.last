@@ -30,6 +30,15 @@ import {
 import Publicacion from '../../classes/Publicacion';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 import Product from '../../classes/Product'
+var ImagePicker = require('react-native-image-picker');
+
+var options = {
+  title: 'Cargar imagenes',
+  storageOptions: {
+    skipBackup: true,
+    path: 'images'
+  }
+};
 
 export default class PubEstandar extends React.Component{
 	constructor(props){
@@ -37,47 +46,129 @@ export default class PubEstandar extends React.Component{
 
 		var producto = (this.props.producto) 
 						? this.props.producto 
-						: {user_id: 1, store_id: 1, priority: this.props.priority, stock: 0, name: '', category: 0, description: '', price: 0.00, fecha_inicio: '1900-01-01', fecha_fin: '1900-01-01' };
+						: {images:[], user_id: 2, store_id: 2, priority: this.props.priority, stock: 0, name: '', category: 0, description: '', price: 0.00, fecha_inicio: '1900-01-01', fecha_fin: '1900-01-01' };
 		
-		Alert.alert('DEBUG', JSON.stringify(producto));
 		this.state = {
 			pub: new Product(producto),
+			images: [],
 			...this.props.producto
 		};
 
+	}
+
+	takePhoto(){
+		ImagePicker.showImagePicker(options, (response) => {
+			console.log('Response = ', response);
+
+			if (response.didCancel) {
+				console.log('User cancelled image picker');
+			}
+			else if (response.error) {
+				console.log('ImagePicker Error: ', response.error);
+			}
+			else if (response.customButton) {
+				console.log('User tapped custom button: ', response.customButton);
+			}
+			else {
+				let source = { uri: response.uri };
+				let image = this.state.images;
+				image[ (image.length) ] = 'data:image/jpeg;base64,' + response.data
+				this.setState({
+					images: image
+				});
+				this.state.pub.setAttribute('images', this.state.images);
+			}
+			
+		});
+	}
+
+	_renderButton(){
+		return (
+			<Col>
+				<TouchableOpacity 
+								
+					style={{
+						backgroundColor: "#02A6A4",
+						width: 170,
+						alingSelf: "center",
+						alignContent: "center",
+						marginTop: 9
+						}}
+				>
+					<FontAwesome style={{color: "#ffffff", fontSize: 52, textAlign: "center"}}>{Icons.camera}</FontAwesome>
+								
+				</TouchableOpacity>
+			</Col>
+		)
+	}
+
+	_renderImages(){
+		const images = this.state.images.map( (data, i)=>{
+			return (
+				<Col>
+					<View style={{flex: 1, width: 150, height: 150, marginTop: 10, marginBottom: 3}}>
+						<Thumbnail 
+							square  
+							style={{
+								width: 150,
+								height: 160
+							}}
+							source={{uri: this.state.images[i]}} 
+						/>
+						<View style={{flex:1, position: 'absolute', top: 0, right: 0}}>
+							<Button 
+								rounded 
+								danger 
+								style={{elevation: 3, position: "absolute", right: 3}}
+								onPress={()=>{
+									let notDeletes = this.state.images.filter( (image, k) =>{
+										return k != i;
+									});
+									this.setState({ images: notDeletes  });
+									this.state.pub.setAttribute('images', this.state.images);
+
+								}}
+							>
+								<Text>
+									<FontAwesome style={{color: "#ffffff", fontSize: 15}}>{Icons.close}</FontAwesome>
+								</Text>
+							</Button>
+						</View>
+					</View>
+				</Col>
+			);
+		})
+
+		return images;
 	}
 
 	render(){
 		return(
 			<View>
 					<Form>
-					<Row style={{marginLeft: 7}}>
+						<Row style={{marginLeft: 7}}>
+							{this._renderImages()}
+						</Row>
+						<Row style={{marginLeft: 7}}>
 
-						<Col>
-							<TouchableOpacity style={{
-								backgroundColor: "#02A6A4",
-								width: 170,
-								alingSelf: "center",
-								alignContent: "center",
-								marginTop: 9
-							}}>
-								<FontAwesome style={{color: "#ffffff", fontSize: 52, textAlign: "center"}}>{Icons.pictureO}</FontAwesome>
-								
-							</TouchableOpacity>
-						</Col>
-						<Col>
-							<TouchableOpacity style={{
-								backgroundColor: "#02A6A4",
-								width: 170,
-								alingSelf: "center",
-								alignContent: "center",
-								marginTop: 9
-							}}>
-								<FontAwesome style={{color: "#ffffff", fontSize: 52, textAlign: "center"}}>{Icons.camera}</FontAwesome>
-								
-							</TouchableOpacity>
-						</Col>
-					</Row>
+							<Col>
+								<TouchableOpacity 
+									onPress={()=>{
+										this.takePhoto()
+									}}
+									style={{
+										backgroundColor: "#02A6A4",
+										width: "97%",
+										alingSelf: "center",
+										alignContent: "center",
+										marginTop: 9
+									}}
+								>
+									<FontAwesome style={{color: "#ffffff", fontSize: 52, textAlign: "center"}}>{Icons.pictureO}</FontAwesome>
+									
+								</TouchableOpacity>
+							</Col>
+						</Row>
 						<Item floatingLabel>
 							<Label 
 								style={{ color: this.props.color }} >Titulo del aviso
@@ -135,7 +226,7 @@ export default class PubEstandar extends React.Component{
 						</Item>
 					</Form>
 
-					<Button onPress={()=>{ this.state.pub.push() }}  block style={{ backgroundColor: "#02A6A4", marginBottom: 52 }}>
+					<Button onPress={()=>{ this.state.pub.push(this.props.navigation) }}  block style={{ backgroundColor: "#02A6A4", marginBottom: 52 }}>
 						<Text style={{color: this.props.color}}>PUBLICAR</Text>
 					</Button>
 				
