@@ -8,7 +8,10 @@ import Funcionarios from '../screens/Funcionarios';
 import AboutFuncionario from '../screens/AboutFuncionario';
 import QRScaner from '../screens/QRScaner';
 import onQRScann from '../screens/onQRScann';
+import ListFormsEvents from '../screens/ListFormsEvents';
 import { Platform, StatusBar } from 'react-native';
+
+import FormEvent from '../components/forms/FormEvent';
 
 const Navigation = StackNavigator({
 	RootScreen: {
@@ -40,6 +43,12 @@ const Navigation = StackNavigator({
 	},
 	onScanner:{
 		screen:onQRScann
+	},
+	FormsEvents: {
+		screen: ListFormsEvents
+	},
+	FormEvent:{
+		screen: FormEvent
 	}
 },{
    cardStyle: {

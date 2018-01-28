@@ -82,14 +82,24 @@ export default class Model{
 		format1 = moment( this.data[attribute] , 'DD-MM-YYYY');
 		format2 = moment( this.data[attribute] , 'YYYY-MM-DD');
 
+
 		return (format1.isValid() || format2.isValid());
+	}
+
+	_validTimeAttribute(attribute){
+		hora1 = moment( this.data[attribute] , 'HH:mm:ss');
+		hora2 = moment( this.data[attribute] , 'HH:mm:ss'); 
+		hora3 = moment( this.data[attribute] , 'hh:mm:ss a'); 
+		hora4 = moment( this.data[attribute] , 'hh:mm:ss A'); 
+
+		return ( hora1.isValid() || hora2.isValid() || hora3.isValid() || hora4.isValid() );
 	}
 
 	valid(type, attribute){
 		return eval(`this._valid${type}Attribute('${attribute}')`);
 	}
 
-	async push(param, method = 'GET' ,exito ='Los datos han sido guardados correctamente', error = 'Ha ocurrido un error al intentar guardar los datos'){
+	async push(param, method = 'GET', navigation = null ,exito ='Los datos han sido guardados correctamente', error = 'Ha ocurrido un error al intentar guardar los datos'){
 		let connection = new Connection;
 
 		let json = JSON.stringify(this.data)
@@ -98,10 +108,27 @@ export default class Model{
 			method,
 			headers:{
 				'Content-Type': 'application/json',
-				Accept: 'application/json'
+				Accept: 'json',
+				'Content-Disposition': 'form-data'
 			},
 			body: body
-		}).then( resp => resp);
+		}).then( resp => {
+			let data = JSON.parse(resp._bodyInit);
+			if(data.status == 200 || data.status == '200'){
+				Alert.alert('Confirmacion', 'Los datos han sido guardados correctamente', [
+					{
+						text: 'Aceptar',
+						onPress: ()=>{ 
+							if(navigation != null)
+								navigation.goBack()
+						}
+					}
+				]);
+			}
+			else
+				Alert.alert('Error', 'Ha ocurrido un error inesperado -> '+JSON.stringify(resp))
+					
+		});
 	}
 
 	async getAll(){

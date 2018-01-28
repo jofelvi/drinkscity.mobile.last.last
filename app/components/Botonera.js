@@ -80,7 +80,7 @@ export default class Botonera extends React.Component{
 						</Col>
 						<Col>
 							<Row style={{alignContent: "center", alignItems: "center"}}>
-								<TouchableOpacity>
+								<TouchableOpacity onPress={()=>{this.props.navigation.navigate('FormsEvents', {titulo: 'Tipo de evento', side: 'Hone', event: false})}}>
 									<BackgroundButton 
 										imagen={require('../assets/img/banda.png')} 
 										text={'CREAR EVENTO'} 
