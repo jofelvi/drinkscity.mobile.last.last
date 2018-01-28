@@ -51,7 +51,7 @@ export default class PubEstandar extends React.Component{
 		this.state = {
 			pub: new Product(producto),
 			images: [],
-			...this.props.producto
+			...producto
 		};
 
 	}

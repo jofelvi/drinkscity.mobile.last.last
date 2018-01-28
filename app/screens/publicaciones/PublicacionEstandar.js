@@ -40,8 +40,7 @@ export default class PublicacionEstandar extends React.Component{
 	_renderForm(){
 		 const { state } = this.props.navigation
 
-		 if( state.params.tipo == 'ESTANDAR' )
-		 	return <PubEstandar priority={state.params.priority} color={'#ffffff'} producto={state.params.producto} />
+		return <PubEstandar priority={state.params.priority} color={'#ffffff'} producto={state.params.producto} />
 	}
 
 	render(){

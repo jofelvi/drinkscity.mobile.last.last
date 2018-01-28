@@ -103,17 +103,17 @@ export default class Model{
 		let connection = new Connection;
 
 		let json = JSON.stringify(this.data)
-		const body = '{"'+param+'":'+json+'}'
+		const body = '{"'+param+'":'+json+'}';
+
 		return await fetch( connection.getUrlApi(this._model), {
 			method,
 			headers:{
 				'Content-Type': 'application/json',
-				Accept: 'json',
-				'Content-Disposition': 'form-data'
+				Accept: 'json'
 			},
 			body: body
 		}).then( resp => {
-			let data = JSON.parse(resp._bodyInit);
+			let data = resp;
 			if(data.status == 200 || data.status == '200'){
 				Alert.alert('Confirmacion', 'Los datos han sido guardados correctamente', [
 					{
@@ -126,7 +126,12 @@ export default class Model{
 				]);
 			}
 			else
-				Alert.alert('Error', 'Ha ocurrido un error inesperado -> '+JSON.stringify(resp))
+				Alert.alert('Error', 'Ha ocurrido un error inesperado', [
+					{
+						text: 'Aceptar',
+						onPress: ()=> { navigation.goBack(); }	
+					}
+				]);
 					
 		});
 	}
