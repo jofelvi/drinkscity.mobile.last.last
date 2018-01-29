@@ -47,9 +47,20 @@ export default class Perfil extends React.Component{
 
 	constructor(props){
 		super(props);
+		negocio = new PerfilEmpresa({
+			profile_picture: require('../assets/img/cafe.jpeg'),
+			descroption: 'Sofisticado ambiente, los mejores hits.',
+			phone: '04262225797',
+			hourary: '09:33 AM - 10:00 PM',
+			laboral_days: 'Lunes - Viernes',
+			has_delivery: true
+		});
+
 		this.state = {
-			profile_picture : null
+			...negocio.data
 		};
+
+		Alert.alert('DEBUG', JSON.stringify(this.state));
 	}
 
 	takePhoto(){
@@ -67,13 +78,6 @@ export default class Perfil extends React.Component{
 			}
 			else {
 				let source = { uri: response.uri };
-				let format = {
-					filename: response.fileName,
-					content: response.data,
-					content_type: 'image/jpeg'
-				};
-				let image = this.state.images;
-				image[ (image.length) ] = 'data:image/jpeg;base64,' + response.data
 				this.setState({
 					profile_picture: image
 				});
@@ -84,11 +88,7 @@ export default class Perfil extends React.Component{
 
 	render(){
 		const { width, height } = Dimensions.get('screen')
-		negocio = new PerfilEmpresa({
-			picture: require('../assets/img/cafe.jpeg'),
-			resena: 'Sofisticado ambiente, los mejores hits.',
-			telefono: '04262225797'
-		});
+
 
 
 		return(
@@ -125,6 +125,8 @@ export default class Perfil extends React.Component{
 									multiline={true}
 									numberOfLines={2}
 									style={{color: "#ffffff"}}
+									value={this.state.descroption}
+									onChangeText={text => { this.setState({description: negocio.setAttribute('description', text) }); }}
 								/>
 							</Item>
 						</Col>
@@ -133,6 +135,9 @@ export default class Perfil extends React.Component{
 								<Label style={{color: "#ffffff"}}> Telefono </Label>
 								<Input
 									style={{color: "#ffffff"}}
+									value={this.state.phone}
+									onChangeText={ text => { this.setState({phone: negocio.setAttribute('phone', phone) }); } }
+							
 								/>
 							</Item>
 						</Col>
@@ -142,6 +147,8 @@ export default class Perfil extends React.Component{
 									<Label style={{color: "#ffffff"}}> Dias de atencion </Label>
 									<Input
 										style={{color: "#ffffff"}}
+										value={this.state.laboral_days}
+										onChangeText={ text =>{ this.setState( {laboral_days: negocio.setAttribute('laboral_days',text)} ); } }
 									/>
 								</Item>
 							</Col>
@@ -150,13 +157,19 @@ export default class Perfil extends React.Component{
 									<Label style={{color: "#ffffff"}}> Horario </Label>
 									<Input
 										style={{color: "#ffffff"}}
-									/>
+										value={this.state.hourary}
+										onChangeText={text =>{ this.setState({hourary: negocio.setAttribute( 'hourary', text ) }); } }
+								/>
 								</Item>
 							</Col>
 						</Grid>
 						<Grid style={{marginTop: 5, marginLeft: 7}}>
 							<Col style={{width: "10%"}}>
-								<CheckBox  color={"#02A6A4"}/>
+								<CheckBox 
+									checked={this.state.has_delivery} 
+									onPress={()=>{  this.setState({ has_delivery: negocio.setAttribute('has_delivery', !this.state.has_delivery) }); }} 
+									color={"#02A6A4"}
+								/>
 							</Col>
 							<Col style={{width: "85%"}}>
 								<Text style={{color: "#ffffff"}}>Tiene delivery</Text>

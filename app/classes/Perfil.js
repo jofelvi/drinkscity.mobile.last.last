@@ -1,27 +1,18 @@
-export default class PerfilEmpresa{
+import Connection from '../config/connection';
+import Model from './Model';
 
-	data = null;
+String.prototype.capitalize = function(){
+	return this.charAt(0).toUpperCase()+this.slice(1);
+};
 
-	constructor(profile){
-		this.data = {
-			...profile
-		}
+export default class PerfilEmpresa extends Model{
+
+	constructor(perfil = false){
+		super('users', perfil);
 	}
 
-	getPerfilPicture(){
-		if(this.data != null){
-			return this.data.foto_perfil;
-		}
-	}
-
-	getResena(){
-		if(this.data != null)
-			return this.data.resena;
-	}
-
-	getTelefono(){
-		if(this.data != null)
-			return this.data.telefono;
+	getProfileData(){
+		return super.getData();
 	}
 
 }

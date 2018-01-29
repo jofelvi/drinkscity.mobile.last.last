@@ -33,6 +33,10 @@ export default class Model{
 		})
 	}
 
+	getData(){
+		return this.data;
+	}
+
 	_createCollection( collection ){
 
 		for(object in collection){
