@@ -46,7 +46,7 @@ export default class PubEstandar extends React.Component{
 
 		var producto = (this.props.producto) 
 						? this.props.producto 
-						: {images:[], user_id: 2, store_id: 2, priority: this.props.priority, stock: 0, name: '', category: 0, description: '', price: 0.00, fecha_inicio: '1900-01-01', fecha_fin: '1900-01-01' };
+						: {images:[], user_id: 2, store_id: 2, priority: this.props.priority, stock: 0, name: '', category: 0, description: '', price: 0.00, start_datetime: '1900-01-01', end_datetime: '1900-01-01' };
 		
 		this.state = {
 			pub: new Product(producto),
@@ -71,6 +71,11 @@ export default class PubEstandar extends React.Component{
 			}
 			else {
 				let source = { uri: response.uri };
+				let format = {
+					filename: response.fileName,
+					content: response.data,
+					content_type: 'image/jpeg'
+				};
 				let image = this.state.images;
 				image[ (image.length) ] = 'data:image/jpeg;base64,' + response.data
 				this.setState({
@@ -159,7 +164,7 @@ export default class PubEstandar extends React.Component{
 									style={{
 										backgroundColor: "#02A6A4",
 										width: "97%",
-										alingSelf: "center",
+										alignSelf: "center",
 										alignContent: "center",
 										marginTop: 9
 									}}
@@ -212,16 +217,16 @@ export default class PubEstandar extends React.Component{
 							<Label style={{ color: this.props.color }}>Fecha de inicio del anuncio</Label>
 							<Input 
 								style={{ color: this.props.color }} 
-								onChangeText={ fecha_inicio =>{ this.setState({ fecha_inicio: this.state.pub.setAttribute('fecha_inicio', fecha_inicio) }) }}  
-								value={this.state.fecha_inicio}
+								onChangeText={ start_datetime =>{ this.setState({ start_datetime: this.state.pub.setAttribute('start_datetime', start_datetime) }) }}  
+								value={this.state.start_datetime}
 							/>
 						</Item>
 						<Item floatingLabel>
 							<Label style={{ color: this.props.color }}>Fecha de finalizacion del anuncio</Label>
 							<Input 
 								style={{ color: this.props.color }} 
-								onChangeText={ fecha_fin =>{ this.setState({ fecha_fin: this.state.pub.setAttribute('fecha_fin', fecha_fin) }); }}  
-								value={this.state.fecha_fin}
+								onChangeText={ end_datetime =>{ this.setState({ end_datetime: this.state.pub.setAttribute('end_datetime', end_datetime) }); }}  
+								value={this.state.end_datetime}
 							/>
 						</Item>
 					</Form>
