@@ -4,8 +4,8 @@ export default class Connection{
 		this.data = {
 			protocol: 'http:',
 			secure_protocol: 'https:',
-			host: 'dylanowen.herokuapp.com/api/v1',
-			port: 80,
+			host: '45.55.45.152:9803/api/v1',
+			port: 36572,
 
 		}
 	}
@@ -23,13 +23,13 @@ export default class Connection{
 		return this.data.port;
 	}
 
-	setProtocol(protocol, secure = false){
+	setProtocol(secure = false){
 		if(secure)
 			this.data.secure_protocol = protocol;
 		else
 			this.data.protocol = protocol;
 
-		return protocol;
+		return ( (secure) ? this.data.secure_protocol : this.data.protocol );
 	}
 
 	setHost(host){
@@ -40,7 +40,7 @@ export default class Connection{
 
 	getUrlApi(destino = false){
 
-		let url = this.getProtocol(true) + '//'+this.getHost()+'/'+((typeof destino != 'boolean') ? destino :'' );
+		let url = this.getProtocol(false) + '//'+this.getHost()+'/'+((typeof destino != 'boolean') ? destino :'' );
 		return url;
 	}
 }

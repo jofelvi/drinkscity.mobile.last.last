@@ -8,6 +8,8 @@ import { searchProducts, modelActions } from '../redux/actions';
 import { funcionarios } from '../redux/actions';
 
 const moment = require('moment');
+const RNFS = require('react-native-fs');
+var path = '/storage/Download/log.jpg';
 
 export default class Model{
 
@@ -121,18 +123,21 @@ export default class Model{
 						onPress: ()=>{ 
 							if(navigation != null)
 								navigation.goBack()
+							return false;
 						}
 					}
 				]);
 			}
 			else
-				Alert.alert('Error', 'Ha ocurrido un error inesperado', [
+			{
+				Alert.alert('Error', 'Ha ocurrido un error inesperado -> '+JSON.stringify(resp), [
 					{
 						text: 'Aceptar',
 						onPress: ()=> { navigation.goBack(); }	
 					}
 				]);
-					
+			}
+
 		});
 	}
 
