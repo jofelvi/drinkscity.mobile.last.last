@@ -19,11 +19,13 @@ import {
 import {
 	Alert,
 	TouchableOpacity,
-	ScrollView
+	ScrollView,
+	WebView
 } from 'react-native'
 
 import Event from '../../classes/Event';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
+const moment = require('moment');
 
 var ImagePicker = require('react-native-image-picker');
 var options = {
@@ -51,25 +53,27 @@ export default class FormEvent extends React.Component{
 
 		let event = (navigation.state.params.evento != false) 
 					? navigation.state.params.evento
-					: {
-						'name' : null, 
-						'category': '',
-						'address': null,
-						'side': null,
-						'video_link': null,
-						'event_day': null,
-						'start_hour': null,
-						'end_hour': null,
-						'details': null,
-						'user_id': null,
-						'store_id': null,
-						'priority': navigation.state.params.priority,
-						'images': []
-					} 
+					: new Event({
+						'name' : '', 
+						'category' :'',
+						'address': '',
+						'video_link': '',
+						'start_datetime': new Date(),
+						'end_datetime': new Date(),
+						'description': '',
+						'user_id': 1,
+						'store_id': 2,
+						'priority': '',
+						'active': '',
+						'longitude': '-',
+						'latitude': '-',
+						'priority': navigation.state.params.priority
+					});
 
 		this.state = {
-			event: new Event(event),
-			...event
+			...event.getData(),
+			event: event,
+			meth: (navigation.state.params.evento != false)  ? 'PUT' : 'POST'
 		}
 	}
 
@@ -139,33 +143,24 @@ export default class FormEvent extends React.Component{
 		return images;
 	}
 
+	_showVideoByLink(link = null){
+		let video = new String(link);
+		let id =  video.split('watch?v=');
+		return 'https://youtube.com/embed/'+id[1];
+	}
 	render(){
 
 		return(
 			<View style={styles.container}>
 				<ScrollView>
 					<Form>
-						<Row style={{marginLeft: 7}}>
-							{this._renderImages()}
-						</Row>
-						<Row style={{marginLeft: 7}}>
+						<Row>
 
 							<Col>
-								<TouchableOpacity 
-									onPress={()=>{
-										this.takePhoto()
-									}}
-									style={{
-										backgroundColor: "#02A6A4",
-										width: "97%",
-										alingSelf: "center",
-										alignContent: "center",
-										marginTop: 9
-									}}
-								>
-									<FontAwesome style={{color: "#ffffff", fontSize: 52, textAlign: "center"}}>{Icons.pictureO}</FontAwesome>
-									
-								</TouchableOpacity>
+								<WebView
+									source={{ uri : this._showVideoByLink(this.state.video_link) }}
+									style={{ height: 300, width: "100%" }}
+								/>
 							</Col>
 						</Row>
 						<Item floatingLabel>
@@ -185,8 +180,9 @@ export default class FormEvent extends React.Component{
 							selectedValue={this.state.category}
 						>
 							<Item style={{color: "#ffffff" }} label="Categoria" value={''} />
-							<Item style={{color: "#ffffff" }} label="Tragos" value={0} />
-							<Item style={{color: "#ffffff" }} label='Licores' value={1} /> 
+							<Item style={{color: "#ffffff" }} label="Electronica" value={"electronica"} />
+							<Item style={{color: "#ffffff" }} label='Evento cultural' value={'evento_cultural'} />
+							<Item style={{color: "#ffffff" }} label='Otros' value={'otros'} /> 
 						</Picker>
 						<Item floatingLabel>
 							<Label style={{ color: "#ffffff" }}>Direccion</Label>
@@ -194,7 +190,7 @@ export default class FormEvent extends React.Component{
 						</Item>
 						<Item floatingLabel>
 							<Label style={{ color: "#ffffff" }}>Detalles</Label>
-							<Input  style={{ color: "#ffffff" }} value={this.state.details} onChangeText={text=>{ this.setState({details: this.state.event.setAttribute('details', text)}); }} multiline={true} numberOfLines={4} />
+							<Input  style={{ color: "#ffffff" }} value={this.state.description} onChangeText={text=>{ this.setState({description: this.state.event.setAttribute('description', text)}); }} multiline={true} numberOfLines={4} />
 						</Item>
 						<Item floatingLabel>
 							<Label style={{ color: "#ffffff" }}>Video promocional (Link)</Label>
@@ -204,39 +200,33 @@ export default class FormEvent extends React.Component{
 								value={this.state.video_link}
 							/>
 						</Item>
-						<Item floatingLabel>
-							<Label style={{ color: "#ffffff" }}>Fecha del evento</Label>
-							<Input 
-								style={{ color: "#ffffff" }} 
-								onChangeText={ event_day =>{ this.setState({ event_day: this.state.event.setAttribute('event_day', event_day) }) }}  
-								value={this.state.event_day}
-							/>
-						</Item>
 						<Row>
-							<Col style={{ width: "50%" }}>
+							<Col style={{ width: "100%" }}>
 								<Item floatingLabel>
-									<Label style={{ color: "#ffffff" }}>Hora de inicio</Label>
+									<Label style={{ color: "#ffffff" }}>Fecha y hora del evento</Label>
 									<Input 
 										style={{ color: "#ffffff" }} 
-										onChangeText={ start_hour =>{ this.setState({ start_hour: this.state.event.setAttribute('start_hour', start_hour) }) }}  
-										value={this.state.start_hour}
+										onChangeText={ event_day =>{ this.setState({ start_datetime: this.state.event.setAttribute('start_datetime', event_day) }) }}  
+										value={ moment(this.state.start_datetime ).format('YYYY-DD-MM hh:mm A') }
 									/>
 								</Item>
 							</Col>
-							<Col style={{ width: "50%" }}>
+						</Row>
+						<Row>
+							<Col style={{ width: "100%" }}>
 								<Item floatingLabel>
-									<Label style={{ color: "#ffffff" }}>Hora de inicio</Label>
+									<Label style={{ color: "#ffffff" }}>Fecha y hora de finalizacion</Label>
 									<Input 
 										style={{ color: "#ffffff" }} 
-										onChangeText={ end_hour =>{ this.setState({ end_hour: this.state.event.setAttribute('end_hour', end_hour) }) }}  
-										value={this.state.end_hour}
+										onChangeText={ end_datetime =>{ this.setState({ end_datetime: this.state.event.setAttribute('end_datetime', end_datetime) }) }}  
+										value={ moment(this.state.end_datetime ).format('YYYY-DD-MM hh:mm A')}
 									/>
 								</Item>
 							</Col>
 						</Row>
 					</Form>
 
-					<Button onPress={()=>{ this.state.event.push(this.props.navigation) }}  block style={{ backgroundColor: "#02A6A4", marginBottom: 52 }}>
+					<Button onPress={()=>{ this.state.event.push(this.props.navigation, this.state.meth) }}  block style={{ backgroundColor: "#02A6A4", marginBottom: 52 }}>
 						<Text style={{color: "#ffffff"}}>PUBLICAR</Text>
 					</Button>
 				</ScrollView>

@@ -52,6 +52,7 @@
 		75DAD1CA490C4BCEA7C0D5E4 /* libRNImagePicker.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 793C8B686FC241C5B5764BBE /* libRNImagePicker.a */; };
 		05BF493E8C2F4EEFB04856E9 /* libRCTImageResizer.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 3CCAE9F593374CA5A68E912D /* libRCTImageResizer.a */; };
 		8FC088FB930D41AF8F6975BA /* libRNFS.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 169131B3444C41F7B9370F5E /* libRNFS.a */; };
+		6FDF4C3AA6B64E3CAAC5B0F4 /* libRCTYouTube.a in Frameworks */ = {isa = PBXBuildFile; fileRef = EB650AE6FC9F42088B83BD48 /* libRCTYouTube.a */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -299,6 +300,8 @@
 		3CCAE9F593374CA5A68E912D /* libRCTImageResizer.a */ = {isa = PBXFileReference; name = "libRCTImageResizer.a"; path = "libRCTImageResizer.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 		80F00B9BEF51488FA4A7EFF5 /* RNFS.xcodeproj */ = {isa = PBXFileReference; name = "RNFS.xcodeproj"; path = "../node_modules/react-native-fs/RNFS.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
 		169131B3444C41F7B9370F5E /* libRNFS.a */ = {isa = PBXFileReference; name = "libRNFS.a"; path = "libRNFS.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
+		41823D4CCB3E4733A316E42F /* RCTYouTube.xcodeproj */ = {isa = PBXFileReference; name = "RCTYouTube.xcodeproj"; path = "../node_modules/react-native-youtube/RCTYouTube.xcodeproj"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = wrapper.pb-project; explicitFileType = undefined; includeInIndex = 0; };
+		EB650AE6FC9F42088B83BD48 /* libRCTYouTube.a */ = {isa = PBXFileReference; name = "libRCTYouTube.a"; path = "libRCTYouTube.a"; sourceTree = "<group>"; fileEncoding = undefined; lastKnownFileType = archive.ar; explicitFileType = undefined; includeInIndex = 0; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -331,6 +334,7 @@
 				75DAD1CA490C4BCEA7C0D5E4 /* libRNImagePicker.a in Frameworks */,
 				05BF493E8C2F4EEFB04856E9 /* libRCTImageResizer.a in Frameworks */,
 				8FC088FB930D41AF8F6975BA /* libRNFS.a in Frameworks */,
+				6FDF4C3AA6B64E3CAAC5B0F4 /* libRCTYouTube.a in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -503,6 +507,7 @@
 				4C12EB48879745F4809D4B6E /* RNImagePicker.xcodeproj */,
 				35E34A3EB52E49AC9ADE2895 /* RCTImageResizer.xcodeproj */,
 				80F00B9BEF51488FA4A7EFF5 /* RNFS.xcodeproj */,
+				41823D4CCB3E4733A316E42F /* RCTYouTube.xcodeproj */,
 			);
 			name = Libraries;
 			sourceTree = "<group>";
@@ -1084,6 +1089,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1091,6 +1097,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-youtube/**",
 				);
 			};
 			name = Debug;
@@ -1112,6 +1119,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1119,6 +1127,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-youtube/**",
 				);
 			};
 			name = Release;
@@ -1144,6 +1153,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-youtube/**",
 				);
 			};
 			name = Debug;
@@ -1168,6 +1178,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-youtube/**",
 				);
 			};
 			name = Release;
@@ -1198,6 +1209,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1205,6 +1217,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-youtube/**",
 				);
 			};
 			name = Debug;
@@ -1235,6 +1248,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 				HEADER_SEARCH_PATHS = (
 					"$(inherited)",
@@ -1242,6 +1256,7 @@
 					"$(SRCROOT)/../node_modules/react-native-image-picker/ios",
 					"$(SRCROOT)/../node_modules/react-native-image-resizer/ios/RCTImageResizer",
 					"$(SRCROOT)/../node_modules/react-native-fs/**",
+					"$(SRCROOT)/../node_modules/react-native-youtube/**",
 				);
 			};
 			name = Release;
@@ -1267,6 +1282,7 @@
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};
 			name = Debug;
@@ -1291,6 +1307,7 @@
 				TVOS_DEPLOYMENT_TARGET = 10.1;
 				LIBRARY_SEARCH_PATHS = (
 					"$(inherited)",
+					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 					"\"$(SRCROOT)/$(TARGET_NAME)\"",
 				);
 			};

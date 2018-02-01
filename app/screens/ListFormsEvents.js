@@ -50,14 +50,14 @@ export default class ListFormsEvents extends React.Component{
 						<List>
 							<ListItem>
 								<Body>
-									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('FormEvent', {tipo: "ESTANDAR", titulo: "Tipos de eventos", evento: false, priority: 0})}}>
+									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('FormEvent', {meth: 'POST', tipo: "ESTANDAR", titulo: "Tipos de eventos", evento: false, priority: 0})}}>
 										<Text style={{color: "#ffffff"}}>PUBLICACION ESTANDAR</Text>
 									</TouchableOpacity>
 								</Body>
 							</ListItem>
 							<ListItem>
 								<Body>
-									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('FormEvent', {tipo: "ESTANDAR", titulo: "Tipos de eventos", evento: false, priority: 1})}}>
+									<TouchableOpacity onPress={()=>{this.props.navigation.navigate('FormEvent', {meth: 'POST', tipo: "ESTANDAR", titulo: "Tipos de eventos", evento: false, priority: 1})}}>
 										<Text style={{color: "#ffffff"}}>PUBLICACION VIP</Text>
 									</TouchableOpacity>
 								</Body>

@@ -87,9 +87,20 @@ export default class Model{
 	_validDateAttribute(attribute){
 		format1 = moment( this.data[attribute] , 'DD-MM-YYYY');
 		format2 = moment( this.data[attribute] , 'YYYY-MM-DD');
+		format3 = moment( this.data[attribute] , 'YYYY-MM-DD HH:mm A');
+		format4 = moment( this.data[attribute] , 'YYYY-MM-DD hh:mm A');
+		format5 = moment( this.data[attribute] , 'YYYY-MM-DD HH:mm a');
+		format6 = moment( this.data[attribute] , 'YYYY-MM-DD hh:mm a');
 
 
-		return (format1.isValid() || format2.isValid());
+		return (
+				format1.isValid() || 
+				format2.isValid() || 
+				format3.isValid() || 
+				format4.isValid() || 
+				format5.isValid() ||
+				format6.isValid()
+			);
 	}
 
 	_validTimeAttribute(attribute){
@@ -110,7 +121,6 @@ export default class Model{
 
 		let json = JSON.stringify(this.data)
 		const body = '{"'+param+'":'+json+'}';
-
 		return await fetch( connection.getUrlApi(this._model), {
 			method,
 			headers:{
@@ -185,7 +195,7 @@ export default class Model{
 			body: params
 		}).then(resp => {
 			const { _bodyInit } = resp;
-			if(resp.status == '200' || resp.status == 200){
+			if(resp.status == '200' || resp.status == 200 || resp.status == '201' || resp.status == 201){
 				Alert.alert('Correcto', 'Los datos han sido actualizados correctamente', [
 					{
 						text: 'Aceptar',

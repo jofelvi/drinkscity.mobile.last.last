@@ -16,9 +16,11 @@
 		"react-native": "0.50.4",
 		"react-native-camera": "^0.7.0",
 		"react-native-fontawesome": "^5.7.0",
+		"react-native-popup-menu": "^0.12.2",
 		"react-native-fs": "^2.9.7",
 		"react-native-photo-upload": "^1.2.0",
 		"react-navigation": "^1.0.0-beta.27",
+		"react-native-youtube": "^1.1.0",
 		"redux": "^3.7.2"
 	},
 	"devDependencies": {

@@ -31,11 +31,9 @@ export default class Event extends Model{
 			'name', 
 			'category',
 			'address',
-			'side',
 			'video_link',
 			'start_datetime',
 			'end_datetime',
-			'end_hour',
 			'description',
 			'user_id',
 			'store_id',
@@ -54,19 +52,18 @@ export default class Event extends Model{
 		 */
 		this.data_type = {
 			name : { type: 'string', required: true, alias: "Titulo del evento" }, 
-			category : {type: 'integer', required: false, alias: 'Categoria'},
-			address: {type: 'string', required: true, alias: 'Direccion del evento'},
-			side : {type: 'string', required: false, alias: 'Lugar del evento'},
+			category : {type: 'string', required: false, alias: 'Categoria'},
+			address: {type: 'string', required: false, alias: 'Direccion del evento'},
 			video_link : {type: 'string', required: false, alias: 'Video de presentacion'},
 			start_datetime : {type: 'date', required: true, alias:'Fecha del evento'},
-			end_datetime : {type: 'time', required: true, alias: 'Hora de inicio del evento (con formato HH:MM:SS AM/PM)'},
-			end_hour: {type:'time', required: true, alias: 'Hora de finalizacion del evento'},
+			end_datetime : {type: 'date', required: true, alias:'Fecha finalizacion del evento'},
 			user_id: {type:'integer', required: true, alias: 'Usuario'},
+			priority: {type:'string', required: false, alias: 'Nivel de prioridad'},
 			store_id:  {type:'integer', required: true, alias: 'Tienda'},
 			description: {type: 'string', required: true, alias: 'Los detalles del evento no pueden quedar en blanco'},
-			active: {type: 'integer', required: true, alias: 'Estado del evento'},
-			longitude: {type: 'string', required: true, alias: 'Longitud geografica del evento' },
-			latitude: {type: 'string', required: true, alias: 'Latitud geografica del evento' }
+			active: {type: 'string', required: false, alias: 'Estado del evento'},
+			longitude: {type: 'string', required: false, alias: 'Longitud geografica del evento' },
+			latitude: {type: 'string', required: false, alias: 'Latitud geografica del evento' }
 		
 		}
 	}
@@ -75,7 +72,7 @@ export default class Event extends Model{
 	 * METODO PARA VALIDAR Y ENVIAR LOS DATOS AL SERVIDOR
 	 * @return boolean RETORNA FALSO SI HA OCURRIDO ALGUN ERROR
 	 */
-	push(navigation = null){
+	push(navigation = null, meth = 'POST'){
 
 		// SE CALCULA LA LONGITUD DEL ARREGLO DE CAMPOS DE LA TABLA Y SE 
 		// RECORRE EN UN FOR PARA VALIDARLOS
@@ -96,6 +93,18 @@ export default class Event extends Model{
 				}
 			}
 		}
-		let resp = super.push('product', 'POST', navigation);
+		let resp = super.push('event', meth, navigation);
+	}
+
+	getVideoId(){
+
+		if(this.video_link == null || this.video_link == ''){
+			return false;
+		}
+		let id = ( this.data.video_link.search('watch?v=')  != -1) 
+			? this.data.video_link.split('watch?v=')
+			: this.data.video_link.split('/'); 
+
+		return Array.isArray(id) ? id[1] : false;
 	}
 }
