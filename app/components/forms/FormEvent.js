@@ -20,11 +20,14 @@ import {
 	Alert,
 	TouchableOpacity,
 	ScrollView,
-	WebView
+	WebView,
+	StatusBar
 } from 'react-native'
 
 import Event from '../../classes/Event';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
+import Modal from "react-native-modal";
+
 const moment = require('moment');
 
 var ImagePicker = require('react-native-image-picker');
@@ -73,7 +76,10 @@ export default class FormEvent extends React.Component{
 		this.state = {
 			...event.getData(),
 			event: event,
-			meth: (navigation.state.params.evento != false)  ? 'PUT' : 'POST'
+			meth: (navigation.state.params.evento != false)  ? 'PUT' : 'POST',
+			togleModal: false,
+			statusBarColor: "#02A6A4",
+			statusBarStyle: 'default'
 		}
 	}
 
@@ -152,6 +158,7 @@ export default class FormEvent extends React.Component{
 
 		return(
 			<View style={styles.container}>
+				<StatusBar backgroundColor={this.state.statusBarColor} />
 				<ScrollView>
 					<Form>
 						<Row>
@@ -184,10 +191,39 @@ export default class FormEvent extends React.Component{
 							<Item style={{color: "#ffffff" }} label='Evento cultural' value={'evento_cultural'} />
 							<Item style={{color: "#ffffff" }} label='Otros' value={'otros'} /> 
 						</Picker>
-						<Item floatingLabel>
-							<Label style={{ color: "#ffffff" }}>Direccion</Label>
-							<Input  style={{ color: "#ffffff" }} value={this.state.address} onChangeText={address=>{ this.setState({address: this.state.event.setAttribute('address', address)}); }} multiline={true} numberOfLines={4} />
-						</Item>
+						<Grid>
+							<Row>
+								<Col style={{width: "15%", marginTop: "18%", marginRight: 0}}>
+									<Item>
+										<TouchableOpacity 
+											onPress={()=>{ 
+												this.setState({togleModal: !this.state.togleModal }) ;
+												this.setState({ 
+													statusBarColor: "#000000", 
+												});
+											}}
+										>
+											<Text>
+												<FontAwesome 
+													style={{
+														color: "#ffffff",
+														fontSize: 52
+													}}
+												>
+													{Icons.mapMarker}
+												</FontAwesome>
+											</Text>
+										</TouchableOpacity>
+									</Item>
+								</Col>
+								<Col>
+									<Item floatingLabel>
+										<Label style={{ color: "#ffffff" }}>Direccion</Label>
+										<Input  style={{ color: "#ffffff" }} value={this.state.address} onChangeText={address=>{ this.setState({address: this.state.event.setAttribute('address', address)}); }} multiline={true} numberOfLines={4} />
+									</Item>
+								</Col>
+							</Row>
+						</Grid>
 						<Item floatingLabel>
 							<Label style={{ color: "#ffffff" }}>Detalles</Label>
 							<Input  style={{ color: "#ffffff" }} value={this.state.description} onChangeText={text=>{ this.setState({description: this.state.event.setAttribute('description', text)}); }} multiline={true} numberOfLines={4} />
@@ -230,6 +266,27 @@ export default class FormEvent extends React.Component{
 						<Text style={{color: "#ffffff"}}>PUBLICAR</Text>
 					</Button>
 				</ScrollView>
+				<View>
+			        <Modal isVisible={this.state.togleModal} backdropColor={'#ffffff'} >
+			          <View style={{ flex: 1 }}>
+			            <TouchableOpacity 
+			            	style={{
+			            		alignSelf: "flex-end"
+			            	}}
+			            	onPress={()=>{
+			            		this.setState({togleModal: !this.state.togleModal});
+			            		this.setState({ 
+			            			statusBarColor: "#02A6A4"
+			            		});
+			            	}}
+			            >
+			            	<Text>
+			            		<FontAwesome style={{fontSize: 26}}>{Icons.close}</FontAwesome>
+			            	</Text>
+			            </TouchableOpacity>
+			          </View>
+			        </Modal>
+		      </View>
 			</View>
 		);
 	}
