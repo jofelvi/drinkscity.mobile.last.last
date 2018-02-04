@@ -33,7 +33,7 @@ export class PopMenu extends React.Component {
 		      </MenuTrigger>
 		      <MenuOptions>
 		        <MenuOption 
-		        	onSelect={()=>{this.props.navigation.navigate('FormEvent', {meth: 'PUT', titulo: 'Listado de eventos publicados', side: 'Home', evento: this.props.evento, priority: this.props.evento.data.priority }) }} 
+		        	onSelect={()=>{this.props.navigation.navigate('FormEvent', {onUpdate: this.props.onUpdate ,meth: 'PUT', titulo: 'Listado de eventos publicados', side: 'Home', evento: this.props.evento, priority: this.props.evento.data.priority }) }} 
 		        >
 		        	<Text style={{fontSize: 21}}>Editar</Text>
 		        </MenuOption>

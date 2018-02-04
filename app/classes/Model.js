@@ -9,7 +9,7 @@ import { funcionarios } from '../redux/actions';
 
 const moment = require('moment');
 const RNFS = require('react-native-fs');
-var path = '/storage/Download/log.jpg';
+var path = '/storage/Download/log_update.txt';
 
 export default class Model{
 
@@ -182,26 +182,32 @@ export default class Model{
 
 	}
 
-	async update(method = 'PUT', navigation){
+	async update(method = 'PUT', model='user', id=undefined ,navigation){
 		const con = new Connection();
 
-		let params = '{ "user" : '+JSON.stringify(this.data)+' }';
+		let params = '{ "'+model+'" : '+JSON.stringify(this.data)+' }';
 
-		let req = await fetch(con.getUrlApi(this._model)+'/'+this.data.id, {
-			method: 'PUT',
+		let req = await fetch(con.getUrlApi(this._model)+'/'+id, {
+			method: method,
 			headers: {
 				'Content-Type': 'application/json'
 			},
 			body: params
 		}).then(resp => {
 			const { _bodyInit } = resp;
+
+			RNFS.writeFile(path, 'URL-> '+con.getUrlApi(this._model)+'/'+this.data.id+'\n PARAMS-> '+params)
+				.then(resp=>{
+					Alert.alert('DEBUG', JSON.stringify(resp));
+				});
+
 			if(resp.status == '200' || resp.status == 200 || resp.status == '201' || resp.status == 201){
 				Alert.alert('Correcto', 'Los datos han sido actualizados correctamente', [
 					{
 						text: 'Aceptar',
 						onPress:()=>{ 
-							navigation.navigate('BtnFuncionarios', {titulo: 'Funcionarios', funcionario: false});
 							navigation.state.params.onUpdate(resp._bodyInit);
+							navigation.goBack();
 						}
 					}
 				]);
@@ -210,6 +216,7 @@ export default class Model{
 				Alert.alert('Error', 'A ocurrido un error inesperado -> '+JSON.stringify(resp)+' -> '+params);
 			}
 		});
+
 	}
 
 	static async getWithId(model , id){

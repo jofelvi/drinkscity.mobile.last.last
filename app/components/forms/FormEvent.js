@@ -71,10 +71,11 @@ export default class FormEvent extends React.Component{
 					});
 
 		this.state = {
-			...event.getData(),
+			...event.data,
 			event: event,
 			meth: (navigation.state.params.evento != false)  ? 'PUT' : 'POST'
 		}
+
 	}
 
 	takePhoto(){
@@ -148,6 +149,7 @@ export default class FormEvent extends React.Component{
 		let id =  video.split('watch?v=');
 		return 'https://youtube.com/embed/'+id[1];
 	}
+
 	render(){
 
 		return(
@@ -226,7 +228,12 @@ export default class FormEvent extends React.Component{
 						</Row>
 					</Form>
 
-					<Button onPress={()=>{ this.state.event.push(this.props.navigation, this.state.meth) }}  block style={{ backgroundColor: "#02A6A4", marginBottom: 52 }}>
+					<Button onPress={()=>{ 
+						if(this.state.meth == 'PUT')
+							this.state.event.update('PATCH','event', this.state.id ,this.props.navigation)
+						else
+							this.state.event.push(this.props.navigation, this.state.meth) 
+					}}  block style={{ backgroundColor: "#02A6A4", marginBottom: 52 }}>
 						<Text style={{color: "#ffffff"}}>PUBLICAR</Text>
 					</Button>
 				</ScrollView>

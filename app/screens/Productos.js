@@ -30,6 +30,7 @@ import {
 import Product from '../classes/Product'
 import { store } from '../redux/store';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
+import Connection from '../config/connection';
 const moment = require('moment')
 
 export default class Productos extends React.Component{
@@ -58,6 +59,20 @@ export default class Productos extends React.Component{
 		instance.allToRedux();
 	}
 
+	_loadUrlImageResource(toLoad){
+		const con = new Connection();
+
+		var url ='';
+		if( Array.isArray(toLoad.images.self) && toLoad.images.self.length > 0 ){
+			url = con.getProtocol()+'//'+con.getOnlyUrl()+toLoad.images.self[0].cover_url;
+			
+		}
+
+		Alert.alert('DEBUG', url);
+
+		return url;
+	}
+
 	_renderCol(dato){
 		let day = moment(dato.created_at).format('DD-MM-YYYY');
 		return(
@@ -83,7 +98,7 @@ export default class Productos extends React.Component{
 					</CardItem>
 					<CardItem cardBody>
 							<Image
-								source={{uri: 'https://victormartinez.me/wp-content/uploads/2017/08/react-native-portada.jpg'}}
+								source={{uri: this._loadUrlImageResource(dato)}}
 								style={{ height: 200, width: "100%", flex: 1 }}
 								/>
 

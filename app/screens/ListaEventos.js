@@ -76,6 +76,17 @@ export default class ListaEventos extends React.Component{
 	}
 
 
+	_onUpdate = (data) =>{
+		let events = this.state.eventos.map((event) =>{
+			if(event.data.id == data.id)
+				return new Event(data);
+			return event;
+		});
+
+		this.setState({
+			eventos: events
+		});
+	}
 
 	_renderList(){
 		const items = this.state.eventos.map( (data, i)=>{
@@ -85,7 +96,7 @@ export default class ListaEventos extends React.Component{
 							<Left />
 							<Body />
 							<Right>
-								<PopMenu navigation={this.props.navigation} evento={data} eventos={this.state.eventos} />
+								<PopMenu onUpdate={this._onUpdate}  navigation={this.props.navigation} evento={data} eventos={this.state.eventos} />
 							</Right>
 						</CardItem>
 						<CardItem cardBody>

@@ -95,7 +95,6 @@ export default class Event extends Model{
 		}
 		let resp = super.push('event', meth, navigation);
 	}
-
 	getVideoId(){
 
 		if(this.video_link == null || this.video_link == ''){

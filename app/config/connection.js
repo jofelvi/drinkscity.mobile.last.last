@@ -6,8 +6,13 @@ export default class Connection{
 			secure_protocol: 'https:',
 			host: '165.227.98.133/api/v1',
 			port: 36572,
+			onlyUrl: '165.227.98.133',
 
 		}
+	}
+
+	getOnlyUrl(){
+		return this.data.onlyUrl;
 	}
 
 

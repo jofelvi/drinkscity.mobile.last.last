@@ -24,6 +24,7 @@ import {
 	Text
 } from 'native-base'
 
+import Connection from '../config/connection';
 import Model from '../classes/Model'
 export default class onQRScann extends React.Component{
 
@@ -81,6 +82,50 @@ export default class onQRScann extends React.Component{
 		);
 	}
 
+	async _validate(order){
+		const body = '{"id": '+order.order_items[0].order_id+' }';
+		con = new Connection();
+		let resp = await fetch( con.getUrlApi('orders/validate_order'), {
+			method: 'PUT',
+			headers: {
+				'Content-Type': 'application/json'
+			},
+			body: body
+		}).then( resp =>{
+			if(resp.status == 200 || resp.status == '200'){
+				Alert.alert('Correcto', 'La orden ha sido correctamente validada', [
+					{
+						text: "Aceptar",
+						onPress:()=>{ this.props.navigation.goBack() }	
+					}
+				]);
+			}
+
+		});
+	}
+
+	validateOrder(){
+		let { order } = this.state;
+		if( order.order_status_id != 3 || order.order_status_id != '3' ){
+			Alert.alert('Error', 'Las unicas ordenes a validar son aquellas que se encuentran aprobadas');
+			return false;
+		}
+
+		
+		Alert.alert('Advertencia', '¿Seguro que desea realizar esta accion?', [
+			{
+				text: 'Aceptar',
+				onPress:()=>{
+					this._validate(order);
+				}
+			},
+			{
+				text: "Cancelar"
+			}
+		]);
+		
+	}
+
 
 	render(){
 		const { width, height } = Dimensions.get('screen')
@@ -100,7 +145,7 @@ export default class onQRScann extends React.Component{
 						</TouchableOpacity>
 					</View>
 					<View style={{marginTop: "14%"}}>
-						<Button rounded full danger>
+						<Button onPress={()=>{this.validateOrder()}}  rounded full danger>
 							<Text style={{color: "#ffffff"}}>Validar</Text>
 						</Button>
 					</View>

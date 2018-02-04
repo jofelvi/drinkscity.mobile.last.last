@@ -3,13 +3,25 @@ import {
   AppRegistry,
   Dimensions,
   StyleSheet,
-  Text,
   TouchableHighlight,
   View,
   Alert,
   StatusBar,
   Linking
 } from 'react-native';
+
+import {
+  Header,
+  Left,
+  Text,
+  Button,
+  Icon,
+  Body,
+  Title
+} from 'native-base';
+
+import { QRScannerView } from '../components/AC-QRCode-RN/lib/index';
+
 import Camera from 'react-native-camera';
 
 export default class QRScaner extends Component {
@@ -37,22 +49,26 @@ export default class QRScaner extends Component {
   render() {
     return (
       <View style={styles.container}>
-      <StatusBar translucent backgroundColor={'#02A6A4'} />
-        <Camera
-          ref={(cam) => {
-            this.camera = cam;
-          }}
-          	barCodeTypes={[Camera.constants.BarCodeType.qr]}
-	  		onBarCodeRead={this.state.onBarCodeRead}
-         	style={styles.preview}
-          	aspect={Camera.constants.Aspect.fill}>
-        </Camera>
+        <StatusBar translucent backgroundColor={'#02A6A4'} />
+        <QRScannerView  
+          onScanResultReceived={this._onBarCodeRead.bind(this)}
+          renderTopBarView={this._topBarView.bind(this)}
+          renderBottomMenuView={this._topBarView.bind(this)}
+          hintText={'Posiciona el QR en el area delimitada'}
+        />
       </View>
     );
   }
 
-  _onBarCodeRead=(e)=>{
-    this.camera.stopCapture();
+  _topBarView = (e) =>{
+    return null;
+  }
+
+  _bottomScanner = (e) =>{
+    return null;
+  }
+ 
+  _onBarCodeRead=(e)=>{ 
     this.setState({
       onBarCodeRead: null
     });
