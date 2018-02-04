@@ -22,6 +22,7 @@
 		"react-navigation": "^1.0.0-beta.27",
 		"react-native-modal": "^5.0.0",
 		"react-native-youtube": "^1.1.0",
+		"react-native-image-crop-picker": "^0.19.2",
 		"redux": "^3.7.2"
 	},
 	"devDependencies": {
