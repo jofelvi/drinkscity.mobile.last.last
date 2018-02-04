@@ -21,8 +21,11 @@ import {
 	TouchableOpacity,
 	ScrollView,
 	WebView,
-	StatusBar
+	StatusBar,
+	StyleSheet,
+	PermissionsAndroid
 } from 'react-native'
+import MapView, { Marker } from 'react-native-maps';
 
 import Event from '../../classes/Event';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
@@ -79,81 +82,128 @@ export default class FormEvent extends React.Component{
 			meth: (navigation.state.params.evento != false)  ? 'PUT' : 'POST',
 			togleModal: false,
 			statusBarColor: "#02A6A4",
-			statusBarStyle: 'default'
+			statusBarStyle: 'default',
+			currentRegion: {
+				latitude: 37.78825,
+				longitude: -122.4324,
+				latitudeDelta: 0.015,
+				longitudeDelta: 0.0121,
+			},
+			markers: []
 		}
+		this.componentWillMount()
 
 	}
 
-	takePhoto(){
-		ImagePicker.showImagePicker(options, (response) => {
-			console.log('Response = ', response);
+	regionFrom(lat, lon, accuracy) {
+	    const oneDegreeOfLongitudeInMeters = 111.32 * 1000;
+	    const circumference = (40075 / 360) * 1000;
 
-			if (response.didCancel) {
-				console.log('User cancelled image picker');
-			}
-			else if (response.error) {
-				console.log('ImagePicker Error: ', response.error);
-			}
-			else if (response.customButton) {
-				console.log('User tapped custom button: ', response.customButton);
-			}
-			else {
-				let source = { uri: response.uri };
-				let image = this.state.images;
-				image[ (image.length) ] = 'data:image/jpeg;base64,' + response.data
-				this.setState({
-					images: image
-				});
-				this.state.event.setAttribute('images', this.state.images);
-			}
-			
-		});
+	    const latDelta = accuracy * (1 / (Math.cos(lat) * circumference));
+	    const lonDelta = (accuracy / oneDegreeOfLongitudeInMeters);
+	    return {
+	      latitude: lat,
+	      longitude: lon,
+	      latitudeDelta: Math.max(0, latDelta),
+	      longitudeDelta: Math.max(0, lonDelta),
+	    };
 	}
 
-	_renderImages(){
-		const images = this.state.images.map( (data, i)=>{
-			return (
-				<Col>
-					<View style={{flex: 1, width: 150, height: 150, marginTop: 10, marginBottom: 3}}>
-						<Thumbnail 
-							square  
-							style={{
-								width: 150,
-								height: 160
-							}}
-							source={{uri: this.state.images[i]}} 
-						/>
-						<View style={{flex:1, position: 'absolute', top: 0, right: 0}}>
-							<Button 
-								rounded 
-								danger 
-								style={{elevation: 3, position: "absolute", right: 3}}
-								onPress={()=>{
-									let notDeletes = this.state.images.filter( (image, k) =>{
-										return k != i;
-									});
-									this.setState({ images: notDeletes  });
-									this.state.event.setAttribute('images', this.state.images);
-
-								}}
-							>
-								<Text>
-									<FontAwesome style={{color: "#ffffff", fontSize: 15}}>{Icons.close}</FontAwesome>
-								</Text>
-							</Button>
-						</View>
-					</View>
-				</Col>
+	async componentWillMount(){
+		try{
+			const permission = await PermissionsAndroid.request(
+				PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION, {
+					'title': 'Solicitud de permisos para el uso de geolocalizacion',
+					'message': `Esta app requiere de permisos especiales para el uso de geolocalizacion`
+				}
 			);
-		})
+			if(permission === PermissionsAndroid.RESULTS.DENIED ){
+				this.props.navigation.goBack();
+			}
+		}catch(err){
+			console.log(err);
+		}
+		navigator.geolocation.getCurrentPosition(
+		    (position) => {
+		    	var { markers } = this.state;
+		    	markers[0] = this.regionFrom(
+		        		position.coords.latitude, 
+		        		position.coords.longitude, 
+		        		position.coords.accuracy
+		        	);
+		    	markers[1] = { ...markers[0] };
+		        this.setState({
+		        	markers: markers,
+		        	currentRegion: {
+		        		...markers[0]
+		        	}, 
+		        	longitude: this.state.event.setAttribute('longitude', markers[0].longitude),
+		        	latitude: this.state.event.setAttribute('latitude', markers[0].latitude)
+		        })
 
-		return images;
+		       	//Alert.alert("coords", "longitud: "+position.coords.longitude+' Longitud State: '+this.state.currentRegion.longitudeDelta+' latitude: '+position.coords.latitude+' accuracy: '+position.coords.accuracy)
+		    },
+		    (error) => alert(error.message),
+		    {enableHighAccuracy: false, timeout: 40000, maximumAge: 20000}
+		);
+	}
+
+	_onDragMarker(coords){
+		const { coordinate } = coords.nativeEvent;
+		this.setState({
+			latitude: this.state.event.setAttribute('latitude', coordinate.latitude),
+			longitude: this.state.event.setAttribute('longitude', coordinate.longitude)
+		})
+	}
+
+	_renderMarkers(){
+		let {markers} = this.state;
+
+		const marks = markers.map((data, i) =>{
+			if( i > 0)
+			{
+				return <Marker 
+						draggable={ (i > 0) } 
+						onDragEnd={ coords =>{this._onDragMarker(coords)} } 
+						coordinate={{...data}}
+					/>
+			}
+		});
+
+		return marks;
 	}
 
 	_showVideoByLink(link = null){
 		let video = new String(link);
 		let id =  video.split('watch?v=');
 		return 'https://youtube.com/embed/'+id[1];
+	}
+
+	_onPressPositionMap(coord){
+		var { coordinate } = coord.nativeEvent
+		var { markers } = this.state
+		markers[1] = {longitude: coordinate.longitude, latitude: coordinate.latitude};
+		this.setState({
+			markers: markers,
+			longitude: this.state.event.setAttribute('longitude', coordinate.longitude),
+			latitude: this.state.event.setAttribute('latitude', coordinate.latitude)
+		});
+	}
+
+	region(){
+		const { markers } = this.state;
+		//Alert.alert('DEBUG', ''+markers.length);
+		if(markers.length > 1){
+			var coords = markers[1];
+			return {
+				...coords
+			};
+		}
+
+		return {
+			...this.state.currentRegion
+		}
+
 	}
 
 	render(){
@@ -195,7 +245,7 @@ export default class FormEvent extends React.Component{
 						</Picker>
 						<Grid>
 							<Row>
-								<Col style={{width: "15%", marginTop: "18%", marginRight: 0}}>
+								<Col style={{width: "16%", marginTop: "11%", marginRight: 0}}>
 									<Item>
 										<TouchableOpacity 
 											onPress={()=>{ 
@@ -206,6 +256,7 @@ export default class FormEvent extends React.Component{
 											}}
 										>
 											<Text>
+												<Label style={{color:"#ffffff"}}>Lugar</Label>
 												<FontAwesome 
 													style={{
 														color: "#ffffff",
@@ -274,8 +325,8 @@ export default class FormEvent extends React.Component{
 					</Button>
 				</ScrollView>
 				<View>
-			        <Modal isVisible={this.state.togleModal} backdropColor={'#ffffff'} >
-			          <View style={{ flex: 1 }}>
+			        <Modal isVisible={this.state.togleModal} backdropColor={'transparent'} >
+			          <View style={{ flex: 1, position: 'relative' }}>
 			            <TouchableOpacity 
 			            	style={{
 			            		alignSelf: "flex-end"
@@ -291,7 +342,21 @@ export default class FormEvent extends React.Component{
 			            		<FontAwesome style={{fontSize: 26}}>{Icons.close}</FontAwesome>
 			            	</Text>
 			            </TouchableOpacity>
+					      <View style ={styles.containerMap}>
+					        <MapView
+					          style={styles.map}
+					          initialRegion={this.state.currentRegion}
+					          initialRegion={this.region()}
+					          onPress={ point => this._onPressPositionMap(point)  }
+					        >
+								<Marker   
+									coordinate={{...this.state.currentRegion}}
+								/>
+					        	{this._renderMarkers()}
+					        </MapView>
+					      </View>
 			          </View>
+
 			        </Modal>
 		      </View>
 			</View>
@@ -303,5 +368,16 @@ const styles = {
 	container: {
 		backgroundColor: "#111111",
 		flex: 1,
-	}
+	},
+	  containerMap: {
+	    ...StyleSheet.absoluteFillObject,
+	    height: 400,
+	    width: 400,
+	    justifyContent: 'flex-end',
+	    alignItems: 'center',
+	    marginTop: "10%"
+	  },
+	  map: {
+	    ...StyleSheet.absoluteFillObject,
+	  },
 }
