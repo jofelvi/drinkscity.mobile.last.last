@@ -1,6 +1,7 @@
 import Connection from '../config/connection';
 import {
-	Alert
+	Alert,
+	AsyncStorage
 } from 'react-native';
 
 import { store } from '../redux/store';
@@ -27,10 +28,10 @@ export default class Model{
 			this.data = false;
 
 		this.newCollection = [];
-
 		store.subscribe(()=>{
 			this.newCollection = store.getState()
 		})
+
 	}
 
 	getData(){
@@ -46,12 +47,27 @@ export default class Model{
 
 	}
 
+	async _getAuthorization(){
+		
+		this._saveToken(token.token);
+	 		
+	}
+
+	_saveToken(token){
+
+	}
+
 	async _getRequest(){
+
+		let session = await AsyncStorage.getItem("@session");
+		let token = await JSON.parse(session);
 		let connection = new Connection;
-		let data = await fetch( connection.getUrlApi(this._model), {
+		let url = connection.getUrlApi(this._model);
+		let data = await fetch( url, {
 			method: 'GET',
 			headers:{
-				Accept: 'application/json'
+				Accept: 'application/json',
+				Authorization:token.token
 			}
 		} ).then( data =>{ return JSON.parse(data._bodyInit);} ).then( data => data	 );
 
@@ -63,20 +79,22 @@ export default class Model{
 	}
 
 	getAttribute(attr){
+
 		return this.data[attr];
 	}
 
 	setAttribute(attr, newValue){
+
 		this.data[attr] = newValue;
 		return this.getAttribute(attr);
 	}
 
 	_validStringAttribute(attribute){
+
 		return true;
 	}
 
 	_validIntegerAttribute(attribute){
-
 		return !isNaN( parseFloat( this.data[attribute] ) ) && isFinite(this.data[attribute]);
 	}
 
@@ -117,6 +135,11 @@ export default class Model{
 	}
 
 	async push(param, method = 'GET', navigation = null ,exito ='Los datos han sido guardados correctamente', error = 'Ha ocurrido un error al intentar guardar los datos'){
+
+
+		let session = await AsyncStorage.getItem("@session");
+		let token = await JSON.parse(session);
+
 		let connection = new Connection;
 
 		let json = JSON.stringify(this.data)
@@ -125,12 +148,13 @@ export default class Model{
 			method,
 			headers:{
 				'Content-Type': 'application/json',
-				Accept: 'json'
+				Accept: 'json',
+				Authorization: token.token
 			},
 			body: body
 		}).then( resp => {
 			let data = resp;
-			if(data.status == 200 || data.status == '200'){
+			if((data.status == 200 || data.status == '200') || (data.status = '201' || data.status == 201)){
 				Alert.alert('Confirmacion', 'Los datos han sido guardados correctamente', [
 					{
 						text: 'Aceptar',
@@ -144,7 +168,7 @@ export default class Model{
 			}
 			else
 			{
-				Alert.alert('Error', 'Ha ocurrido un error inesperado -> '+JSON.stringify(resp), [
+				Alert.alert('Error', 'Ha ocurrido un error inesperado', [
 					{
 						text: 'Aceptar',
 						onPress: ()=> { navigation.goBack(); }	
@@ -156,12 +180,19 @@ export default class Model{
 	}
 
 	async getAll(){
+
+
+
+		let session = await AsyncStorage.getItem("@session");
+		let token = await JSON.parse(session);
+
 		const con = new Connection();
 		let url = con.getUrlApi(this._model);
 		let req = await fetch(url, {
 			method: 'GET',
 			headers: {
-				Accept: 'application/json'
+				Accept: 'application/json',
+				Authorization: token.token
 			}
 		}).then( resp =>{
 			return JSON.parse(resp._bodyInit);
@@ -171,18 +202,29 @@ export default class Model{
 	}	
 
 	async delete(method = 'DELETE'){
+
+
+
+		let session = await AsyncStorage.getItem("@session");
+		let token = await JSON.parse(session);
 		const con = new Connection();
 		
 		var req = await fetch(con.getUrlApi(this._model)+'/'+this.data.id, {
 			method,
 			headers:{
-				Accept: 'application/json'
+				Accept: 'application/json',
+				Authorization: token.token
 			}
 		}).then( resp =>{ Alert.alert('Accion realizada', 'La accion se ha realizado de manera correcta'); } );
 
 	}
 
 	async update(method = 'PUT', model='user', id=undefined ,navigation){
+
+
+		let session = await AsyncStorage.getItem("@session");
+		let token = await JSON.parse(session);
+
 		const con = new Connection();
 
 		let params = '{ "'+model+'" : '+JSON.stringify(this.data)+' }';
@@ -190,16 +232,12 @@ export default class Model{
 		let req = await fetch(con.getUrlApi(this._model)+'/'+id, {
 			method: method,
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				Authorization: token.token
 			},
 			body: params
 		}).then(resp => {
 			const { _bodyInit } = resp;
-
-			RNFS.writeFile(path, 'URL-> '+con.getUrlApi(this._model)+'/'+this.data.id+'\n PARAMS-> '+params)
-				.then(resp=>{
-					Alert.alert('DEBUG', JSON.stringify(resp));
-				});
 
 			if(resp.status == '200' || resp.status == 200 || resp.status == '201' || resp.status == 201){
 				Alert.alert('Correcto', 'Los datos han sido actualizados correctamente', [
@@ -220,12 +258,18 @@ export default class Model{
 	}
 
 	static async getWithId(model , id){
+
+
+
+		let session = await AsyncStorage.getItem("@session");
+		let token = await JSON.parse(session);
 		con = new Connection();
 
 		let resp = fetch(con.getUrlApi(model)+'/'+id, {
 			method: 'GET',
 			headers:{
-				Accept: 'application/json'
+				Accept: 'application/json',
+				Authorization: token.token
 			}
 		}).then( (resp)=>{
 			return resp._bodyInit;

@@ -5,7 +5,8 @@ import {
 	Alert,
 	Image,
 	StatusBar,
-	TouchableOpacity
+	TouchableOpacity,
+	AsyncStorage
 } from 'react-native';
 
 import {
@@ -28,16 +29,62 @@ import {
 
 } from 'native-base';
 
+import Connection from '../config/connection';
+
 import FontAwesome, {Icons} from 'react-native-fontawesome'
 
+const con = new Connection();
 
 export default class Login extends React.Component {
 
 	constructor(props){
 		super(props);
+		this.state = {
+			email: null,
+			password: null,
+			loading: false,
+			text: 'Ingresar',
+			sessionActive: false
+		};
+
 
 	}
 
+	async requestLogin(){
+		if( (this.state.email == null || this.state.password == null) || ( this.state.email == "" || this.state.password == "" ) ){
+			Alert.alert('Aviso', 'Usted necesita completar los datos solicitados para poder iniciar sesion', [
+				{
+					text: 'Entiendo'	
+				}
+			]);
+			return false;
+		}
+
+		this.setState({ loading: true, text: 'Cargando...' });
+
+		let login = await fetch( con.getUrlApi('authenticate', false), {
+			method: 'POST',
+			headers: {
+				'Content-Type': 'application/json',
+				Accept: 'json'
+			},
+			body: JSON.stringify(this.state)
+		}).then(resp => {
+			let { _bodyInit } = resp;
+			_bodyInit = JSON.parse(_bodyInit);
+			let data =  _bodyInit;
+			if(resp.status == 200 || resp.status == '200'){
+				let session = {
+					token: data.auth_token
+				}
+				AsyncStorage.removeItem('@session');
+				AsyncStorage.setItem('@session', JSON.stringify(session));
+			    this.props.navigation.navigate('HomeScreen', {token: session});
+				
+			}
+			this.setState({ loading: false, text: 'Ingresar'});
+		});
+	}
 
 	render(){
 		return(
@@ -67,6 +114,7 @@ export default class Login extends React.Component {
 											<Label style={{color: "#ffffff"}}>Correo electronico</Label>
 											<Input 
 												style={{color: "#ffffff"}}
+												onChangeText={text =>{ this.setState({ email: text }) } }
 											/>
 
 										</Item>
@@ -79,6 +127,7 @@ export default class Login extends React.Component {
 											<Input 
 												style={{color: "#ffffff"}}
 												secureTextEntry={true}
+												onChangeText={text =>{ this.setState({ password: text }) } }
 											/>
 
 										</Item>
@@ -86,9 +135,9 @@ export default class Login extends React.Component {
 								</Row>
 								<Row>
 									<Col style={{width: "95%"}}>
-										<Button  onPress={()=>{this.props.navigation.navigate('HomeScreen')}} block rounded style={{marginTop: 10}}>
+										<Button disabled={this.state.login} onPress={()=>{ this.requestLogin() }} block rounded style={{marginTop: 10}}>
 											<Text style={{color: "#ffffff"}}>
-												Ingresar
+												{this.state.text}
 											</Text>
 										</Button>
 									</Col>

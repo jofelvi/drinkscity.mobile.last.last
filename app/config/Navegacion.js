@@ -11,11 +11,17 @@ import onQRScann from '../screens/onQRScann';
 import ListFormsEvents from '../screens/ListFormsEvents';
 import Login from '../screens/Login';
 import ListaEventos from '../screens/ListaEventos';
+
+import Splash from '../screens/Splash';
 import { Platform, StatusBar } from 'react-native';
 
 import FormEvent from '../components/forms/FormEvent';
 
 const Navigation = StackNavigator({
+	SplahScreen: {
+		screen: Splash
+	},
+
 	RootScreen: {
 		screen: Login,
 		navigationOptions: {

@@ -30,6 +30,7 @@ import {
 import Publicacion from '../../classes/Publicacion';
 import FontAwesome, { Icons } from 'react-native-fontawesome';
 import Product from '../../classes/Product'
+import Cropper from '../../classes/Cropper';
 var ImagePicker = require('react-native-image-picker');
 
 var options = {
@@ -56,7 +57,7 @@ export default class PubEstandar extends React.Component{
 
 	}
 
-	takePhoto(){
+	async takePhoto(){
 		ImagePicker.showImagePicker(options, (response) => {
 			console.log('Response = ', response);
 
@@ -77,10 +78,20 @@ export default class PubEstandar extends React.Component{
 					content_type: 'image/jpeg'
 				};
 				let image = this.state.images;
-				image[ (image.length) ] = 'data:image/jpeg;base64,' + response.data
-				this.setState({
-					images: image
-				});
+				const crop = new Cropper();
+				//image[ (image.length) ] = 'data:image/jpeg;base64,' +  response.data
+
+				let b64Crop = crop.cropping(response.path, 600, 500);
+
+				setTimeout(()=>{
+						image[ (image.length) ] = 'data:image/jpeg;base64,' + b64Crop._55.data; 
+
+						this.setState({
+							images: image
+						});
+				}, 3000)
+				 
+				
 				this.state.pub.setAttribute('images', this.state.images);
 			}
 			

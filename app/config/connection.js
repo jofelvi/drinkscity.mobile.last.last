@@ -1,3 +1,8 @@
+import {
+	AsyncStorage,
+	Alert
+} from 'react-native';
+
 export default class Connection{
 
 	constructor(){
@@ -7,7 +12,22 @@ export default class Connection{
 			host: '165.227.98.133/api/v1',
 			port: 36572,
 			onlyUrl: '165.227.98.133',
+			onSession: false,
+			token: null
+		}
 
+	}
+
+	 async _getAuthorization(){
+			
+		try{
+			let session = await AsyncStorage.getItem("@session");
+			session = JSON.parse(session);
+			
+			this.data.onSession = true;
+			this.data.token = session.token;
+		}catch(err){
+			console.log(err)
 		}
 	}
 
@@ -15,6 +35,9 @@ export default class Connection{
 		return this.data.onlyUrl;
 	}
 
+	getSessionToken(){
+		return this.data.token;
+	}
 
 	getProtocol(secure = false){
 		return secure ? this.data.secure_protocol : this.data.protocol;
@@ -43,8 +66,7 @@ export default class Connection{
 	}
 
 
-	getUrlApi(destino = false){
-
+	getUrlApi(destino = false, login = true){
 		let url = this.getProtocol(false) + '//'+this.getHost()+'/'+((typeof destino != 'boolean') ? destino :'' );
 		return url;
 	}

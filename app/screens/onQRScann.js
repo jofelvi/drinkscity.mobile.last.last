@@ -83,12 +83,15 @@ export default class onQRScann extends React.Component{
 	}
 
 	async _validate(order){
+		let session = await AsyncStorage.getItem("@session");
+		let token = await JSON.parse(session);
 		const body = '{"id": '+order.order_items[0].order_id+' }';
 		con = new Connection();
 		let resp = await fetch( con.getUrlApi('orders/validate_order'), {
 			method: 'PUT',
 			headers: {
-				'Content-Type': 'application/json'
+				'Content-Type': 'application/json',
+				Authorization: token.token
 			},
 			body: body
 		}).then( resp =>{

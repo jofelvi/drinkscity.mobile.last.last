@@ -29,7 +29,7 @@ import {
 export default class ListFormsEvents extends React.Component{
 
 	static navigationOptions = {
-		title: 'Crear Producto',
+		title: 'Creacion de eventos',
 		headerTintColor: "#ffffff",
 		headerStyle: { backgroundColor: "#02A6A4" }
 	}

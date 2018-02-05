@@ -11,8 +11,9 @@ import {
 	StatusBar,
 	Dimensions,
 	TouchableOpacity,
-	Image
-
+	Image,
+	AsyncStorage,
+	Alert
 } from 'react-native'
 
 import MainHeader from '../components/MainHeader'
@@ -22,6 +23,21 @@ export default class Home extends Component {
 
 	constructor(props){
 		super(props);
+	}
+
+	async saveToken(){
+
+		try{
+			let { navigation } = this.props;
+			let {token} = navigation.state.params;
+			await AsyncStorage.setItem("@session",JSON.stringify(token));
+		}catch( err ){
+			console.log(err)
+		}
+	}
+
+	componentWillMount(){
+		this.saveToken();
 	}
 
 	render(){

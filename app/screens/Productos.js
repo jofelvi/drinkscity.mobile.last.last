@@ -67,9 +67,6 @@ export default class Productos extends React.Component{
 			url = con.getProtocol()+'//'+con.getOnlyUrl()+toLoad.images.self[0].cover_url;
 			
 		}
-
-		Alert.alert('DEBUG', url);
-
 		return url;
 	}
 
