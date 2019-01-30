@@ -33,13 +33,16 @@ export default class Event extends Model{
 			'address',
 			'side',
 			'video_link',
-			'event_day',
-			'start_hour',
+			'start_datetime',
+			'end_datetime',
 			'end_hour',
-			'details',
+			'description',
 			'user_id',
 			'store_id',
-			'priority'
+			'priority',
+			'active',
+			'longitude',
+			'latitude'
 		];
 
 		/**
@@ -55,12 +58,16 @@ export default class Event extends Model{
 			address: {type: 'string', required: true, alias: 'Direccion del evento'},
 			side : {type: 'string', required: false, alias: 'Lugar del evento'},
 			video_link : {type: 'string', required: false, alias: 'Video de presentacion'},
-			event_day : {type: 'date', required: true, alias:'Fecha del evento'},
-			start_hour : {type: 'time', required: true, alias: 'Hora de inicio del evento (con formato HH:MM:SS AM/PM)'},
+			start_datetime : {type: 'date', required: true, alias:'Fecha del evento'},
+			end_datetime : {type: 'time', required: true, alias: 'Hora de inicio del evento (con formato HH:MM:SS AM/PM)'},
 			end_hour: {type:'time', required: true, alias: 'Hora de finalizacion del evento'},
 			user_id: {type:'integer', required: true, alias: 'Usuario'},
 			store_id:  {type:'integer', required: true, alias: 'Tienda'},
-			details: {type: 'string', required: true, alias: 'Los detalles del evento no pueden quedar en blanco'}
+			description: {type: 'string', required: true, alias: 'Los detalles del evento no pueden quedar en blanco'},
+			active: {type: 'integer', required: true, alias: 'Estado del evento'},
+			longitude: {type: 'string', required: true, alias: 'Longitud geografica del evento' },
+			latitude: {type: 'string', required: true, alias: 'Latitud geografica del evento' }
+		
 		}
 	}
 

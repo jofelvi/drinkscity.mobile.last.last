@@ -59,8 +59,6 @@ export default class Perfil extends React.Component{
 		this.state = {
 			...negocio.data
 		};
-
-		Alert.alert('DEBUG', JSON.stringify(this.state));
 	}
 
 	takePhoto(){

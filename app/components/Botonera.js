@@ -90,7 +90,7 @@ export default class Botonera extends React.Component{
 							</Row>
 							<Row style={{alignContent: "center", alignItems: "center",  marginTop: "9%"}}>
 
-								<TouchableOpacity>
+								<TouchableOpacity onPress={()=> { this.props.navigation.navigate('Eventos',{titulo: 'Listado de eventos publicados', side: 'Home', event: false}) } }>
 									<BackgroundButton 
 										imagen={require('../assets/img/banda.png')} 
 										text={'MIS EVENTOS'} 

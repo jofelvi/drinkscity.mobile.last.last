@@ -25,6 +25,14 @@ const modelActions = (funcionarios = [], model = null) =>{
 			funcionarios
 		};
 	}
+
+	if( model == 'events' ){
+		let funcs = {
+			type: 'LOAD_EVENTS',
+			funcionarios
+		}
+		return funcs;
+	}
 }
 
 

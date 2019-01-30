@@ -148,14 +148,13 @@ export default class Model{
 	async getAll(){
 		const con = new Connection();
 		let url = con.getUrlApi(this._model);
-
 		let req = await fetch(url, {
 			method: 'GET',
 			headers: {
 				Accept: 'application/json'
 			}
 		}).then( resp =>{
-			return resp._bodyInit;
+			return JSON.parse(resp._bodyInit);
 		});
 
 		store.dispatch(modelActions(req, this._model));
