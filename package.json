@@ -13,7 +13,7 @@
 		"native-base": "^2.3.7",
 		"prop-types": "^15.6.0",
 		"react": "16.0.0",
-		"react-native": "0.50.4",
+		"react-native": "0.70.6",
 		"react-native-camera": "^0.7.0",
 		"react-native-fontawesome": "^5.7.0",
 		"react-native-popup-menu": "^0.12.2",
